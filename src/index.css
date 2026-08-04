@@ -1,5 +1,35 @@
 @import "tailwindcss";
 
+:root {
+  --spacing-3xs: 0.25rem;  /* 4px */
+  --spacing-2xs: 0.375rem; /* 6px */
+  --spacing-xs: 0.5rem;    /* 8px */
+  --spacing-sm: 0.75rem;   /* 12px */
+  --spacing-md: 1rem;      /* 16px */
+  --spacing-lg: 1.5rem;    /* 24px */
+  --spacing-xl: 2rem;      /* 32px */
+  --spacing-2xl: 3rem;     /* 48px */
+  --spacing-3xl: 4rem;     /* 64px */
+  --spacing-4xl: 6rem;     /* 96px */
+
+  --section-px: var(--spacing-md);
+  --section-py: var(--spacing-2xl);
+}
+
+@media (min-width: 768px) {
+  :root {
+    --section-px: var(--spacing-xl);
+    --section-py: var(--spacing-3xl);
+  }
+}
+
+@media (min-width: 1024px) {
+  :root {
+    --section-px: var(--spacing-2xl);
+    --section-py: var(--spacing-4xl);
+  }
+}
+
 @layer base {
   html {
     @apply scroll-smooth;
@@ -16,6 +46,30 @@
 }
 
 @layer utilities {
+  .section-padding {
+    padding-left: var(--section-px);
+    padding-right: var(--section-px);
+    padding-top: var(--section-py);
+    padding-bottom: var(--section-py);
+  }
+
+  .section-padding-x {
+    padding-left: var(--section-px);
+    padding-right: var(--section-px);
+  }
+
+  .section-padding-y {
+    padding-top: var(--section-py);
+    padding-bottom: var(--section-py);
+  }
+
+  .section-container {
+    max-width: 80rem;
+    margin-left: auto;
+    margin-right: auto;
+    width: 100%;
+  }
+
   .bg-warm-ivory {
     background-color: #FAFAF7;
   }

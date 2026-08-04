@@ -73,12 +73,12 @@ export function Act04BodyAdapt() {
   const [selectedPos, setSelectedPos] = useState<PositionData>(POSITIONS[0]);
 
   return (
-    <section id="act-04" className="min-h-screen bg-[#F7F9FC] text-slate-900 py-16 md:py-20 lg:py-24 px-6 md:px-12 lg:px-16 flex flex-col justify-center relative overflow-hidden">
+    <section id="act-04" className="min-h-screen bg-[#F7F9FC] text-slate-900 section-padding flex flex-col justify-center relative overflow-hidden">
       
       {/* Background Subtle Grid Pattern */}
       <div className="absolute inset-0 bg-[radial-gradient(#003B95_1px,transparent_1px)] [background-size:32px_32px] opacity-[0.03] pointer-events-none" />
 
-      <div className="max-w-7xl mx-auto w-full grid grid-cols-1 lg:grid-cols-12 gap-12 items-center relative z-10">
+      <div className="section-container grid grid-cols-1 lg:grid-cols-12 gap-12 items-center relative z-10">
         
         {/* Left Column: Selector & Editorial Header (5 cols) */}
         <div className="lg:col-span-5 space-y-8">
@@ -118,20 +118,11 @@ export function Act04BodyAdapt() {
               );
             })}
           </div>
-
-          {/* Floating Experience Panel */}
-          <ExperiencePanel
-            badge={selectedPos.badge}
-            title={selectedPos.title}
-            subtitle={selectedPos.subtitle}
-            description={selectedPos.description}
-            metrics={selectedPos.metrics}
-          />
         </div>
 
-        {/* Right Column: Dynamic Biomechanical Mattress Visualization (7 cols) */}
-        <div className="lg:col-span-7 flex flex-col items-center justify-center relative">
-          <div className="relative w-full aspect-[4/3] max-w-2xl bg-white/80 backdrop-blur-xl border border-white rounded-[32px] shadow-2xl p-8 flex flex-col items-center justify-center overflow-hidden">
+        {/* Right Column: Dynamic Biomechanical Mattress Visualization & Experience Panel (7 cols) */}
+        <div className="lg:col-span-7 flex flex-col items-center justify-center space-y-6 relative">
+          <div className="relative w-full aspect-[4/3] max-w-2xl bg-white/80 backdrop-blur-xl border border-white rounded-[32px] shadow-2xl p-6 sm:p-8 flex flex-col items-center justify-center overflow-hidden">
             
             {/* Mattress Outline SVG */}
             <svg className="w-full h-full max-h-[380px]" viewBox="0 0 400 300" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -210,6 +201,17 @@ export function Act04BodyAdapt() {
               </div>
             </div>
 
+          </div>
+
+          {/* Floating Experience Panel */}
+          <div className="w-full max-w-2xl">
+            <ExperiencePanel
+              badge={selectedPos.badge}
+              title={selectedPos.title}
+              subtitle={selectedPos.subtitle}
+              description={selectedPos.description}
+              metrics={selectedPos.metrics}
+            />
           </div>
         </div>
 

@@ -43,12 +43,12 @@ const METRICS: MetricItem[] = [
 
 export function Act07SleepInsights() {
   return (
-    <section id="act-07" className="min-h-screen bg-[#F8F9FC] text-slate-900 py-16 md:py-20 lg:py-24 px-6 md:px-12 lg:px-16 flex flex-col justify-center relative overflow-hidden">
+    <section id="act-07" className="min-h-screen bg-[#F8F9FC] text-slate-900 section-padding flex flex-col justify-center relative overflow-hidden">
       
       {/* Background Soft Glow */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-[#003B95]/5 rounded-full blur-[120px] pointer-events-none" />
 
-      <div className="max-w-7xl mx-auto w-full grid grid-cols-1 lg:grid-cols-12 gap-12 items-center relative z-10">
+      <div className="section-container grid grid-cols-1 lg:grid-cols-12 gap-12 items-center relative z-10">
         
         {/* Left Column: Editorial & Description (5 cols) */}
         <div className="lg:col-span-5 space-y-8">

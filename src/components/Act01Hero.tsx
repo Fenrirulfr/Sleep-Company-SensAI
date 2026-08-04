@@ -157,7 +157,7 @@ export function Act01Hero() {
       scrollTrigger: {
         trigger: containerRef.current,
         start: 'top top',
-        end: '+=400%',
+        end: '+=220%',
         scrub: true,
         pin: true,
         anticipatePin: 1,
@@ -262,7 +262,7 @@ export function Act01Hero() {
 
           {/* Interactive Layer */}
           <div 
-            className="absolute inset-0 z-10 flex flex-col justify-start pt-[10vh] sm:pt-[14vh] px-[5%] md:px-[10%] pointer-events-none select-none"
+            className="absolute inset-0 z-10 flex flex-col justify-start pt-20 sm:pt-28 section-padding-x pointer-events-none select-none"
             style={{ transform: prefersReducedMotion ? 'none' : `translate(${mousePos.x * 0.4}px, ${mousePos.y * 0.4}px)` }}
           >
             

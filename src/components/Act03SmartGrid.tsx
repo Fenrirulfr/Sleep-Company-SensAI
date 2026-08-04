@@ -97,7 +97,7 @@ export function Act03SmartGrid({ onOpenTrialModal }: Act03Props) {
         scrollTrigger: {
           trigger: sectionRef.current,
           start: 'top top',
-          end: '+=350%',
+          end: '+=200%',
           pin: true,
           scrub: true,
           anticipatePin: 1,
@@ -121,7 +121,7 @@ export function Act03SmartGrid({ onOpenTrialModal }: Act03Props) {
     <section 
       id="act-03"
       ref={sectionRef}
-      className="relative w-full h-screen overflow-hidden bg-white"
+      className="relative w-full h-screen flex items-center overflow-hidden bg-white"
       aria-label="Inside SmartGRID Discovery"
     >
       {/* Background WebGL Viewport (Fabric lifts as you scroll) */}
@@ -136,7 +136,7 @@ export function Act03SmartGrid({ onOpenTrialModal }: Act03Props) {
       </div>
 
       {/* Discovery Canvas Overlay */}
-      <div className="absolute inset-0 z-10 p-6 md:p-12 lg:p-16 flex flex-col justify-between pointer-events-none">
+      <div className="absolute inset-0 z-10 section-padding flex flex-col justify-between pointer-events-none">
         
         {/* Header Title */}
         <div className="max-w-xl pointer-events-auto">
@@ -152,7 +152,7 @@ export function Act03SmartGrid({ onOpenTrialModal }: Act03Props) {
         </div>
 
         {/* Hotspots over layers */}
-        {progress > 0.25 && (
+        {progress > 0.05 && (
           <div className="absolute inset-0 pointer-events-auto">
             {LAYER_HOTSPOTS.map((hotspot) => {
               const isActive = activeHotspot.id === hotspot.id;
@@ -183,7 +183,7 @@ export function Act03SmartGrid({ onOpenTrialModal }: Act03Props) {
 
         {/* Floating Reusable Experience Panel */}
         <div className="self-end w-full max-w-md pointer-events-auto">
-          {progress > 0.3 && (
+          {progress > 0.05 && (
             <ExperiencePanel
               badge={activeHotspot.badge}
               title={activeHotspot.title}

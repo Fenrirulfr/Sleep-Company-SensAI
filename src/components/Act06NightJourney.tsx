@@ -73,7 +73,7 @@ export function Act06NightJourney() {
   return (
     <section 
       id="act-06"
-      className="relative w-full min-h-screen overflow-hidden bg-slate-950 text-white flex items-center justify-center py-16 md:py-20 lg:py-24 px-6 md:px-12"
+      className="relative w-full min-h-screen overflow-hidden bg-slate-950 text-white flex items-center justify-center section-padding"
       aria-label="Your Night Journey"
     >
       {/* Luxury Bedroom Ambient Background Image & Dynamic Lighting Overlays */}
@@ -102,7 +102,7 @@ export function Act06NightJourney() {
       </div>
 
       {/* Main Content Layout */}
-      <div className="relative z-10 w-full max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+      <div className="relative z-10 section-container grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
         
         {/* Left Column: Editorial & Selector (6 cols) */}
         <div className="lg:col-span-6 space-y-8">

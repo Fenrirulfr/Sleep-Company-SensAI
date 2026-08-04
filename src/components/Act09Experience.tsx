@@ -1,5 +1,5 @@
 import React, { useRef } from 'react';
-import { motion, useScroll, useTransform } from 'motion/react';
+import { motion } from 'motion/react';
 import { Sparkles, MapPin } from 'lucide-react';
 
 interface Act09Props {
@@ -8,25 +8,20 @@ interface Act09Props {
 
 export function Act09Experience({ onOpenTrialModal }: Act09Props) {
   const containerRef = useRef<HTMLDivElement>(null);
-  
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ['start end', 'end end']
-  });
-
-  const opacity = useTransform(scrollYProgress, [0.1, 0.4], [0, 1]);
-  const y = useTransform(scrollYProgress, [0.1, 0.4], [30, 0]);
 
   return (
     <section 
       id="act-09" 
       ref={containerRef} 
-      className="relative min-h-screen bg-white text-slate-900 flex items-center justify-center py-16 md:py-20 lg:py-24 px-6 md:px-12 overflow-hidden"
+      className="relative min-h-screen bg-white text-slate-900 flex items-center justify-center section-padding overflow-hidden"
     >
       <div className="absolute inset-0 bg-gradient-to-b from-slate-50/50 to-white pointer-events-none" />
 
       <motion.div 
-        style={{ opacity, y }}
+        initial={{ opacity: 0, y: 30 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, margin: "-50px" }}
+        transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
         className="relative z-10 max-w-4xl mx-auto text-center space-y-12"
       >
         <p className="text-xs font-mono uppercase tracking-[0.3em] text-[#003B95] font-semibold">
@@ -55,15 +50,15 @@ export function Act09Experience({ onOpenTrialModal }: Act09Props) {
           </button>
 
           {/* Secondary CTA */}
-          <button 
-            onClick={() => {
-              alert("Store Locator: Finding your nearest SensAI Flagship Store...");
-            }}
+          <a 
+            href="https://thesleepcompany.in/pages/our-store"
+            target="_blank"
+            rel="noopener noreferrer"
             className="w-full sm:w-auto px-8 py-5 rounded-full bg-white border border-slate-200 text-slate-800 font-semibold text-sm tracking-wide hover:border-[#003B95] hover:text-[#003B95] transition-all duration-300 flex items-center justify-center gap-2.5 cursor-pointer"
           >
             <MapPin className="w-4 h-4 text-[#003B95]" />
             <span>Locate a Store</span>
-          </button>
+          </a>
         </div>
 
         {/* Graceful Footer Note */}

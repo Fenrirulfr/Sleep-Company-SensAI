@@ -77,7 +77,7 @@ export function Act08ModernHomes() {
   return (
     <section 
       id="act-08"
-      className="relative w-full min-h-screen overflow-hidden flex items-center justify-center bg-slate-950 text-white py-16 md:py-20 lg:py-24 px-6 md:px-12"
+      className="relative w-full min-h-screen overflow-hidden flex items-center justify-center bg-slate-950 text-white section-padding"
       aria-label="Designed For Modern Homes"
     >
       {/* Background Room Transition Layer */}
@@ -98,7 +98,7 @@ export function Act08ModernHomes() {
       </div>
 
       {/* Main Container */}
-      <div className="relative z-10 w-full max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+      <div className="relative z-10 section-container grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
         
         {/* Left Column: Title & Room Selectors (6 cols) */}
         <div className="lg:col-span-6 space-y-8">

@@ -92,7 +92,7 @@ export function Act02MeetSensAI() {
         scrollTrigger: {
           trigger: containerRef.current,
           start: 'top top',
-          end: '+=350%',
+          end: '+=200%',
           scrub: true,
           pin: true,
           anticipatePin: 1,
@@ -113,19 +113,19 @@ export function Act02MeetSensAI() {
   }, []);
 
   return (
-    <div id="act-02" className="text-slate-900 font-sans relative bg-white">
-      <section 
-        ref={containerRef} 
-        className="relative w-full h-screen overflow-hidden z-10"
-        aria-label="SensAI Adaptive Technology Experience"
-      >
+    <section 
+      id="act-02"
+      ref={containerRef} 
+      className="text-slate-900 font-sans relative bg-white w-full h-screen overflow-hidden z-10"
+      aria-label="SensAI Adaptive Technology Experience"
+    >
         {/* Background WebGL Viewport */}
         <div className="absolute inset-0 z-0 pointer-events-none select-none overflow-hidden">
           <WebGLSequenceViewer urls={SCENE_02_FRAMES} progress={progress} />
         </div>
 
         {/* Content & Adaptive Experience Panel Overlay */}
-        <div className="absolute inset-0 z-10 p-6 md:p-12 lg:p-16 flex flex-col justify-between pointer-events-none">
+        <div className="absolute inset-0 z-10 section-padding flex flex-col justify-between pointer-events-none">
           
           {/* Header & Editorial Title */}
           <div className="max-w-xl pointer-events-auto">
@@ -146,7 +146,7 @@ export function Act02MeetSensAI() {
           </div>
 
           {/* Interactive Hotspots over Mattress */}
-          {progress > 0.25 && progress < 0.90 && (
+          {progress > 0.05 && progress < 0.95 && (
             <div className="absolute inset-0 pointer-events-auto">
               {HOTSPOTS.map((hotspot) => {
                 const isActive = activeHotspot.id === hotspot.id;
@@ -175,7 +175,7 @@ export function Act02MeetSensAI() {
 
           {/* Floating Experience Panel (Single dynamic panel) */}
           <div className="self-end w-full max-w-md pointer-events-auto">
-            {progress > 0.15 && (
+            {progress > 0.05 && (
               <ExperiencePanel
                 badge={activeHotspot.badge}
                 title={activeHotspot.title}
@@ -187,7 +187,6 @@ export function Act02MeetSensAI() {
           </div>
 
         </div>
-      </section>
-    </div>
+    </section>
   );
 }

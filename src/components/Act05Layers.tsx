@@ -72,9 +72,9 @@ export function Act05Layers() {
   const [activeLayer, setActiveLayer] = useState<LayerData>(LAYERS[1]);
 
   return (
-    <section id="act-05" className="min-h-screen bg-white text-slate-900 py-16 md:py-20 lg:py-24 px-6 md:px-12 lg:px-16 flex flex-col justify-center relative overflow-hidden">
+    <section id="act-05" className="min-h-screen bg-white text-slate-900 section-padding flex flex-col justify-center relative overflow-hidden">
       
-      <div className="max-w-7xl mx-auto w-full grid grid-cols-1 lg:grid-cols-12 gap-12 items-center relative z-10">
+      <div className="section-container grid grid-cols-1 lg:grid-cols-12 gap-12 items-center relative z-10">
         
         {/* Left Column: Stacked Layer Visualization (7 cols) */}
         <div className="lg:col-span-7 flex flex-col items-center justify-center space-y-3">
