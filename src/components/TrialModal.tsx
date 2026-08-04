@@ -19,8 +19,6 @@ export const TrialModal: React.FC<TrialModalProps> = ({ isOpen, onClose, dnaResu
     city: '',
   });
 
-  if (!isOpen) return null;
-
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setSubmitted(true);
@@ -28,8 +26,9 @@ export const TrialModal: React.FC<TrialModalProps> = ({ isOpen, onClose, dnaResu
 
   return (
     <AnimatePresence>
-      <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-slate-900/40 backdrop-blur-md">
-        {/* Animated Background Overlay */}
+      {isOpen && (
+        <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-slate-900/40 backdrop-blur-md">
+          {/* Animated Background Overlay */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -107,9 +106,6 @@ export const TrialModal: React.FC<TrialModalProps> = ({ isOpen, onClose, dnaResu
           ) : (
             <form onSubmit={handleSubmit} className="space-y-6">
               <div>
-                <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#003B95]/5 border border-[#003B95]/10 text-[10px] font-semibold tracking-wider text-[#003B95] uppercase mb-3">
-                  <Sparkles className="w-3 h-3 text-[#003B95]" /> White-Glove Concierge Experience
-                </div>
                 <h3 className="text-3xl font-light text-slate-900 font-serif-editorial leading-tight">
                   Reserve 100-Night Trial
                 </h3>
@@ -238,6 +234,7 @@ export const TrialModal: React.FC<TrialModalProps> = ({ isOpen, onClose, dnaResu
           )}
         </motion.div>
       </div>
+      )}
     </AnimatePresence>
   );
 };

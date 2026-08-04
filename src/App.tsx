@@ -3,10 +3,7 @@ import { motion, useScroll } from 'motion/react';
 import { SoundscapeTrack, ActId } from './types';
 import { NavigationHeader } from './components/NavigationHeader';
 import { CursorGlow } from './components/CursorGlow';
-import { Act01Hero } from './components/Act01Hero';
-import { Act02MeetSensAI } from './components/Act02MeetSensAI';
-import { Act03SmartGrid } from './components/Act03SmartGrid';
-import { Act04BodyAdapt } from './components/Act04BodyAdapt';
+import { CinematicContainer } from './components/CinematicContainer';
 import { Act05Layers } from './components/Act05Layers';
 import { Act06NightJourney } from './components/Act06NightJourney';
 import { Act07SleepInsights } from './components/Act07SleepInsights';
@@ -44,7 +41,6 @@ export default function App() {
       { id: 'arrival', domId: 'act-01' },
       { id: 'sensai', domId: 'act-02' },
       { id: 'smartgrid', domId: 'act-03' },
-      { id: 'body-adapt', domId: 'act-04' },
       { id: 'layers', domId: 'act-05' },
       { id: 'night-journey', domId: 'act-06' },
       { id: 'sleep-insights', domId: 'act-07' },
@@ -69,8 +65,6 @@ export default function App() {
               setConciergeState('explore-layers');
             } else if (matchedAct.id === 'smartgrid') {
               setConciergeState('try-side-sleeper');
-            } else if (matchedAct.id === 'body-adapt') {
-              setConciergeState('explore-layers');
             } else if (matchedAct.id === 'layers') {
               setConciergeState('change-lighting');
             } else if (matchedAct.id === 'night-journey') {
@@ -102,7 +96,6 @@ export default function App() {
       arrival: 'act-01',
       sensai: 'act-02',
       smartgrid: 'act-03',
-      'body-adapt': 'act-04',
       layers: 'act-05',
       'night-journey': 'act-06',
       'sleep-insights': 'act-07',
@@ -132,12 +125,11 @@ export default function App() {
           { id: 'arrival', actNumber: '01', title: 'Arrival', subtitle: 'Tomorrow Begins Tonight', navLabel: '01 Arrival' },
           { id: 'sensai', actNumber: '02', title: 'SensAI', subtitle: 'Adaptive Intelligence', navLabel: '02 SensAI' },
           { id: 'smartgrid', actNumber: '03', title: 'SmartGRID', subtitle: 'Inside the Core', navLabel: '03 SmartGRID' },
-          { id: 'body-adapt', actNumber: '04', title: 'Body Adapt', subtitle: 'Designed Around Your Body', navLabel: '04 Body Adapt' },
-          { id: 'layers', actNumber: '05', title: 'Layers', subtitle: 'Experience Every Layer', navLabel: '05 Layers' },
-          { id: 'night-journey', actNumber: '06', title: 'Night Journey', subtitle: 'Your Night Journey', navLabel: '06 Night Journey' },
-          { id: 'sleep-insights', actNumber: '07', title: 'Sleep Insights', subtitle: 'Restorative Dynamics', navLabel: '07 Sleep Insights' },
-          { id: 'modern-homes', actNumber: '08', title: 'Modern Homes', subtitle: 'Designed For Modern Homes', navLabel: '08 Modern Homes' },
-          { id: 'experience', actNumber: '09', title: 'Experience', subtitle: 'Experience SensAI', navLabel: '09 Experience' }
+          { id: 'layers', actNumber: '04', title: 'Layers', subtitle: 'Experience Every Layer', navLabel: '04 Layers' },
+          { id: 'night-journey', actNumber: '05', title: 'Night Journey', subtitle: 'Your Night Journey', navLabel: '05 Night Journey' },
+          { id: 'sleep-insights', actNumber: '06', title: 'SleepDNA', subtitle: 'Your SleepDNA Profile', navLabel: '06 SleepDNA' },
+          { id: 'modern-homes', actNumber: '07', title: 'Modern Homes', subtitle: 'Designed For Modern Homes', navLabel: '07 Modern Homes' },
+          { id: 'experience', actNumber: '08', title: 'Experience', subtitle: 'Experience SensAI', navLabel: '08 Experience' }
         ]}
         currentActId={currentActId}
         onSelectAct={handleSelectAct}
@@ -150,10 +142,10 @@ export default function App() {
       {/* Main Experience Flow */}
       <main>
         <TransitionManager />
-        <Act01Hero />
-        <Act02MeetSensAI />
-        <Act03SmartGrid onOpenTrialModal={() => setIsTrialModalOpen(true)} />
-        <Act04BodyAdapt />
+        <CinematicContainer 
+          onOpenTrialModal={() => setIsTrialModalOpen(true)} 
+          onActChange={(id) => setCurrentActId(id)}
+        />
         <Act05Layers />
         <Act06NightJourney />
         <Act07SleepInsights />
@@ -169,7 +161,7 @@ export default function App() {
           } else if (conciergeState === 'explore-layers') {
             handleSelectAct('smartgrid');
           } else if (conciergeState === 'try-side-sleeper') {
-            handleSelectAct('body-adapt');
+            handleSelectAct('layers');
           } else if (conciergeState === 'change-lighting') {
             handleSelectAct('night-journey');
           } else if (conciergeState === 'view-recovery') {
@@ -180,8 +172,7 @@ export default function App() {
             const nextActMap: Record<ActId, ActId> = {
               'arrival': 'sensai',
               'sensai': 'smartgrid',
-              'smartgrid': 'body-adapt',
-              'body-adapt': 'layers',
+              'smartgrid': 'layers',
               'layers': 'night-journey',
               'night-journey': 'sleep-insights',
               'sleep-insights': 'modern-homes',

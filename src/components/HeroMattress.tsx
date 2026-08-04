@@ -87,6 +87,7 @@ export const HeroMattress: React.FC<HeroMattressProps> = ({
               key={src + index}
               src={src}
               alt={`SensAI Cinematic Frame ${index + 1}`}
+              referrerPolicy="no-referrer"
               className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-150 ease-out ${
                 currentFrameIndex === index ? 'opacity-100 scale-100' : 'opacity-0 scale-102 pointer-events-none'
               }`}

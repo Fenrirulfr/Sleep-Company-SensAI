@@ -1,29 +1,10 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { motion } from 'motion/react';
+import { motion, AnimatePresence } from 'motion/react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { WebGLSequenceViewer } from './WebGLSequenceViewer';
 import { ExperiencePanel } from './ExperiencePanel';
 
 gsap.registerPlugin(ScrollTrigger);
-
-const SCENE_02_FRAMES = [
-  'https://lh3.googleusercontent.com/d/18yOY5F-D67OazSX9az_go_ZfUAVe-tcA',
-  'https://lh3.googleusercontent.com/d/1DOwxqqYGhlBoP24_kbRIJaBicTOAs34E',
-  'https://lh3.googleusercontent.com/d/1HR-faFz4YHIWRklxnWvCvM-yxmK_6Now',
-  'https://lh3.googleusercontent.com/d/1JHicuyS9Q09yEByNDFjZzsw6yJnASfIr',
-  'https://lh3.googleusercontent.com/d/1JbK7Vh4MLa1k8MoDq98ljtQIsyvjPlzw',
-  'https://lh3.googleusercontent.com/d/1O4IejPanmlWP1_xT_3S6bdTo7zlw7NKz',
-  'https://lh3.googleusercontent.com/d/1OIc17ULcEn-ZyorPkMb-7uK0GD8DXfYB',
-  'https://lh3.googleusercontent.com/d/1VBhoX6QFXmi391SGf8zAMlQ5u4pmQ_3w',
-  'https://lh3.googleusercontent.com/d/1YLVH_1UcoJKZf2SIeJI8_8JaiBHnjoJa',
-  'https://lh3.googleusercontent.com/d/1_JwtZ6EYjoikpxl1K_A1Iwl6IGiUF14n',
-  'https://lh3.googleusercontent.com/d/1cOPZR2IilXv2ZwhlARPMsoCmPevECu4c',
-  'https://lh3.googleusercontent.com/d/1dWDV5BMZvZv9RM3fD3VtJFcW1sn56t9U',
-  'https://lh3.googleusercontent.com/d/1fYI5kArPmeVA85U62BorB31abUKBlfzV',
-  'https://lh3.googleusercontent.com/d/1gdqu17C5TC7f9CVyvGmTQ2DkVJyQ1W2o',
-  'https://lh3.googleusercontent.com/d/1oP5EDEv2VePxUZyOMwZsA1dLbq1obW87'
-];
 
 interface HotspotData {
   id: string;
@@ -36,54 +17,82 @@ interface HotspotData {
   metrics: Array<{ label: string; value: string | number; unit?: string }>;
 }
 
-const HOTSPOTS: HotspotData[] = [
+const CRAFTSMANSHIP_HOTSPOTS: HotspotData[] = [
   {
-    id: 'grid',
-    top: '38%',
-    left: '48%',
-    badge: 'CORE TECH',
-    title: 'SmartGRID® Matrix',
-    subtitle: 'HYPER-ELASTIC POLYMER',
-    description: 'Instantly flexes under body weight to relieve pressure while maintaining structural support.',
+    id: 'fabric',
+    top: '32%',
+    left: '46%',
+    badge: 'TACTILE ELEGANCE',
+    title: 'Premium Knit Fabric',
+    subtitle: 'BESPOKE TEXTILE',
+    description: 'Woven with ultra-fine high-density fibers for a supple, breathable surface that invites touch while retaining pristine, long-lasting structure.',
     metrics: [
-      { label: 'Air Channels', value: '2,500+' },
-      { label: 'Pressure Relief', value: '80%', unit: 'more' }
+      { label: 'Thread Quality', value: 'Ultra-Fine' },
+      { label: 'Handfeel', value: 'Silk-Touch' }
     ]
   },
   {
-    id: 'ergonomics',
-    top: '52%',
+    id: 'stitching',
+    top: '48%',
+    left: '58%',
+    badge: 'EXQUISITE DETAIL',
+    title: 'Precision Stitching',
+    subtitle: 'TAILORED QUILTING',
+    description: 'Micro-stepped geometric quilting creates balanced tension distribution across every seam and a subtle signature motif.',
+    metrics: [
+      { label: 'Quilting Pattern', value: 'Geometric' },
+      { label: 'Tension', value: 'Balanced' }
+    ]
+  },
+  {
+    id: 'edge',
+    top: '64%',
     left: '35%',
-    badge: 'PERSONALIZATION',
-    title: 'Dual-Zone Ergonomics',
-    subtitle: 'SPINAL ALIGNMENT',
-    description: 'Adaptive firmness zones support lumbar curve and shoulders independently.',
+    badge: 'STRUCTURAL POISE',
+    title: 'Reinforced Edge Finish',
+    subtitle: 'ARCHITECTURAL BINDING',
+    description: 'Hand-finished side piping provides elegant structural containment, preventing roll-off while defining a crisp, tailored silhouette.',
     metrics: [
-      { label: 'Support Zones', value: 'Dual' },
-      { label: 'Motion Isolation', value: '100%' }
+      { label: 'Perimeter Support', value: 'Full-360°' },
+      { label: 'Craft Finish', value: 'Hand-Piped' }
     ]
   },
   {
-    id: 'quilt',
-    top: '28%',
-    left: '60%',
-    badge: 'TACTILE LUXURY',
-    title: 'Silk-Blend Cover',
-    subtitle: 'MICRO-CLIMATE',
-    description: 'Ultra-breathable Japanese quilted weave for ambient temperature regulation all night.',
+    id: 'surface',
+    top: '38%',
+    left: '68%',
+    badge: 'LUSTROUS WEAVE',
+    title: 'Premium Surface Finish',
+    subtitle: 'PLUSH REFLECTION',
+    description: 'Subtle sheen and architectural light interaction showcase the depth, soft contours, and timeless refinement of luxury materials.',
     metrics: [
-      { label: 'Cooling Airflow', value: 'Active' },
-      { label: 'Touch Texture', value: 'Cloud' }
+      { label: 'Light Diffusion', value: 'Soft-Matte' },
+      { label: 'Finish Type', value: 'Luxury Plush' }
     ]
   }
 ];
 
-export function Act02MeetSensAI() {
+export function Act02MeetSensAI({ progress: customProgress }: { progress?: number }) {
   const containerRef = useRef<HTMLDivElement>(null);
-  const [progress, setProgress] = useState(0);
-  const [activeHotspot, setActiveHotspot] = useState<HotspotData>(HOTSPOTS[0]);
+  const [internalProgress, setInternalProgress] = useState(0);
+  const [activeHotspot, setActiveHotspot] = useState<HotspotData>(CRAFTSMANSHIP_HOTSPOTS[0]);
+
+  const progress = customProgress !== undefined ? customProgress : internalProgress;
 
   useEffect(() => {
+    if (progress < 0.25) {
+      setActiveHotspot(CRAFTSMANSHIP_HOTSPOTS[0]);
+    } else if (progress < 0.5) {
+      setActiveHotspot(CRAFTSMANSHIP_HOTSPOTS[1]);
+    } else if (progress < 0.75) {
+      setActiveHotspot(CRAFTSMANSHIP_HOTSPOTS[2]);
+    } else {
+      setActiveHotspot(CRAFTSMANSHIP_HOTSPOTS[3]);
+    }
+  }, [progress]);
+
+  useEffect(() => {
+    if (customProgress !== undefined) return;
     if (!containerRef.current) return;
 
     let tl: gsap.core.Timeline | null = null;
@@ -98,7 +107,7 @@ export function Act02MeetSensAI() {
           anticipatePin: 1,
           refreshPriority: 10,
           onUpdate: (self) => {
-            setProgress(self.progress);
+            setInternalProgress(self.progress);
           }
         }
       });
@@ -110,83 +119,118 @@ export function Act02MeetSensAI() {
       clearTimeout(timer);
       if (tl) tl.kill();
     };
-  }, []);
+  }, [customProgress]);
 
   return (
     <section 
       id="act-02"
       ref={containerRef} 
-      className="text-slate-900 font-sans relative bg-white w-full h-screen overflow-hidden z-10"
-      aria-label="SensAI Adaptive Technology Experience"
+      className="text-slate-900 font-sans relative bg-transparent w-full h-screen overflow-hidden z-10"
+      aria-label="SensAI Craftsmanship Experience"
     >
-        {/* Background WebGL Viewport */}
-        <div className="absolute inset-0 z-0 pointer-events-none select-none overflow-hidden">
-          <WebGLSequenceViewer urls={SCENE_02_FRAMES} progress={progress} />
-        </div>
+      {/* Ambient Lighting Highlight */}
+      <div 
+        className="absolute inset-0 pointer-events-none transition-all duration-700 z-0"
+        style={{
+          background: 'radial-gradient(circle at 40% 40%, rgba(0, 59, 149, 0.03) 0%, rgba(255, 255, 255, 0) 60%)'
+        }}
+      />
 
-        {/* Content & Adaptive Experience Panel Overlay */}
-        <div className="absolute inset-0 z-10 section-padding flex flex-col justify-between pointer-events-none">
-          
-          {/* Header & Editorial Title */}
-          <div className="max-w-xl pointer-events-auto">
-            <motion.p 
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: progress > 0.05 ? 1 : 0, y: progress > 0.05 ? 0 : 10 }}
-              className="text-xs font-mono uppercase tracking-widest text-[#003B95] mb-2 font-semibold"
+      {/* Primary Interactive Hotspots Layer */}
+      <div className="absolute inset-0 z-20 pointer-events-none">
+        {CRAFTSMANSHIP_HOTSPOTS.map((hotspot) => {
+          const isActive = activeHotspot.id === hotspot.id;
+          return (
+            <button
+              key={hotspot.id}
+              id={`hotspot-${hotspot.id}`}
+              onClick={() => setActiveHotspot(hotspot)}
+              onMouseEnter={() => setActiveHotspot(hotspot)}
+              className="absolute group flex items-center justify-center transition-all duration-300 pointer-events-auto focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#003B95] focus-visible:ring-offset-2 rounded-full"
+              style={{
+                top: hotspot.top,
+                left: hotspot.left,
+                transform: 'translate(-50%, -50%)',
+                width: '48px',
+                height: '48px',
+              }}
+              aria-label={`Explore ${hotspot.title}`}
             >
-              Adaptive Intelligence
-            </motion.p>
+
+              
+
+            </button>
+          );
+        })}
+      </div>
+
+      {/* Content & Craftsmanship Experience Overlay */}
+      <div className="absolute inset-0 z-10 w-full h-full max-w-7xl mx-auto px-6 md:px-12 flex items-center select-none pointer-events-none">
+        
+        {/* Editorial Content Column (Desktop: left col-span-5, mobile: full stack) */}
+        <div className="w-full lg:max-w-[540px] max-w-xl pointer-events-auto text-left flex flex-col justify-center space-y-8">
+          
+          {/* Editorial Typography Header Block */}
+          <div className="space-y-4">
+            <motion.div 
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: progress > 0.04 ? 1 : 0, y: progress > 0.04 ? 0 : 10 }}
+              transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+              className="flex items-center gap-2"
+            >
+              <span className="w-1.5 h-1.5 rounded-full bg-[#003B95]" />
+              <p className="text-[14px] font-mono uppercase tracking-[0.2em] text-[#003B95] font-semibold leading-none">
+                CRAFTSMANSHIP
+              </p>
+            </motion.div>
+
             <motion.h2 
               initial={{ opacity: 0, y: 15 }}
-              animate={{ opacity: progress > 0.08 ? 1 : 0, y: progress > 0.08 ? 0 : 15 }}
-              className="text-4xl md:text-5xl lg:text-6xl font-light font-serif tracking-tight text-slate-900 leading-tight"
+              animate={{ opacity: progress > 0.06 ? 1 : 0, y: progress > 0.06 ? 0 : 15 }}
+              transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+              className="text-[32px] sm:text-[40px] lg:text-[56px] font-semibold font-serif tracking-tight text-slate-900 leading-[1.05]"
             >
-              Comfort that learns <span className="italic text-[#003B95]">your body.</span>
+              Luxury begins long before <span className="italic text-[#003B95] font-normal">you lie down.</span>
             </motion.h2>
+
+            <motion.p
+              initial={{ opacity: 0, y: 15 }}
+              animate={{ opacity: progress > 0.08 ? 1 : 0, y: progress > 0.08 ? 0 : 15 }}
+              transition={{ duration: 0.6, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
+              className="text-[16px] sm:text-[17px] lg:text-[18px] text-[#2B2B2B] font-normal leading-[1.7] max-w-[520px]"
+            >
+              Crafted with thoughtful detail. Designed to feel premium before you even lie down.
+            </motion.p>
           </div>
 
-          {/* Interactive Hotspots over Mattress */}
-          {progress > 0.05 && progress < 0.95 && (
-            <div className="absolute inset-0 pointer-events-auto">
-              {HOTSPOTS.map((hotspot) => {
-                const isActive = activeHotspot.id === hotspot.id;
-                return (
-                  <button
-                    key={hotspot.id}
-                    onMouseEnter={() => setActiveHotspot(hotspot)}
-                    onClick={() => setActiveHotspot(hotspot)}
-                    className="absolute -translate-x-1/2 -translate-y-1/2 group cursor-pointer focus:outline-none"
-                    style={{ top: hotspot.top, left: hotspot.left }}
-                    aria-label={`Inspect ${hotspot.title}`}
-                  >
-                    <span className={`relative flex h-8 w-8 items-center justify-center`}>
-                      <span className={`animate-ping absolute inline-flex h-full w-full rounded-full ${
-                        isActive ? 'bg-[#003B95]/40' : 'bg-slate-400/20'
-                      }`} />
-                      <span className={`relative inline-flex rounded-full h-4 w-4 border-2 transition-all duration-300 ${
-                        isActive ? 'bg-[#003B95] border-white scale-125' : 'bg-white border-[#003B95] group-hover:scale-110'
-                      }`} />
-                    </span>
-                  </button>
-                );
-              })}
-            </div>
-          )}
-
-          {/* Floating Experience Panel (Single dynamic panel) */}
-          <div className="self-end w-full max-w-md pointer-events-auto">
-            {progress > 0.05 && (
-              <ExperiencePanel
-                badge={activeHotspot.badge}
-                title={activeHotspot.title}
-                subtitle={activeHotspot.subtitle}
-                description={activeHotspot.description}
-                metrics={activeHotspot.metrics}
-              />
-            )}
+          {/* Floating Glass Experience Panel - beautifully aligned underneath */}
+          <div className="w-full max-w-[420px] transition-all duration-300">
+            <AnimatePresence mode="wait">
+              {progress > 0.08 && (
+                <motion.div
+                  key={activeHotspot.id}
+                  initial={{ opacity: 0, y: 15, scale: 0.98 }}
+                  animate={{ opacity: 1, y: 0, scale: 1 }}
+                  exit={{ opacity: 0, y: -10, scale: 0.98 }}
+                  transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
+                >
+                  <ExperiencePanel
+                    badge={activeHotspot.badge}
+                    title={activeHotspot.title}
+                    subtitle={activeHotspot.subtitle}
+                    description={activeHotspot.description}
+                    metrics={activeHotspot.metrics}
+                    className="w-full"
+                  />
+                </motion.div>
+              )}
+            </AnimatePresence>
           </div>
 
         </div>
+
+      </div>
     </section>
   );
 }
+

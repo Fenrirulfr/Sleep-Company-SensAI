@@ -168,21 +168,40 @@
   animation: pulseGlow 5s ease-in-out infinite;
 }
 
-/* Custom minimal premium dark scrollbar */
+/* Custom minimal premium scrollbar */
 ::-webkit-scrollbar {
   width: 6px;
+  height: 6px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #020813;
+  background: transparent;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: rgba(0, 87, 184, 0.35);
+  background: rgba(0, 59, 149, 0.25);
   border-radius: 9999px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(0, 87, 184, 0.7);
+  background: rgba(0, 59, 149, 0.5);
+}
+
+.custom-scrollbar-light::-webkit-scrollbar {
+  width: 5px;
+}
+
+.custom-scrollbar-light::-webkit-scrollbar-track {
+  background: transparent;
+  margin: 12px 0;
+}
+
+.custom-scrollbar-light::-webkit-scrollbar-thumb {
+  background: rgba(0, 59, 149, 0.2);
+  border-radius: 9999px;
+}
+
+.custom-scrollbar-light::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 59, 149, 0.45);
 }
 

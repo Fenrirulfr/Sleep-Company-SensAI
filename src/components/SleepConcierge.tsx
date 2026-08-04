@@ -82,7 +82,7 @@ export function SleepConcierge({ currentState = 'explore-layers', onAction }: Sl
                 <span className="text-[9px] font-semibold tracking-[0.2em] text-slate-400 uppercase">
                   Sleep Concierge
                 </span>
-                <AnimatePresence mode="wait">
+                <AnimatePresence mode="popLayout">
                   <motion.span
                     key={currentState}
                     initial={{ opacity: 0, y: 5 }}

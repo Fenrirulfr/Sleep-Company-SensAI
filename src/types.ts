@@ -2,7 +2,6 @@ export type ActId =
   | 'arrival'
   | 'sensai'
   | 'smartgrid'
-  | 'body-adapt'
   | 'layers'
   | 'night-journey'
   | 'sleep-insights'

@@ -127,15 +127,14 @@ export function GlobalLoader({ onComplete }: GlobalLoaderProps) {
     return () => clearTimeout(safeguardTimer);
   }, [onComplete]);
 
-  if (!shouldRender) return null;
-
   return (
     <AnimatePresence>
-      <motion.div
-        initial={{ opacity: 1 }}
-        exit={{ opacity: 0, y: -40 }}
-        transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
-        className="fixed inset-0 z-[9999] flex flex-col justify-between p-12 bg-[#030712] text-white select-none overflow-hidden"
+      {shouldRender && (
+        <motion.div
+          initial={{ opacity: 1 }}
+          exit={{ opacity: 0, y: -40 }}
+          transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
+          className="fixed inset-0 z-[9999] flex flex-col justify-between p-12 bg-[#030712] text-white select-none overflow-hidden"
         style={{
           background: 'radial-gradient(circle at 50% 40%, rgba(0, 59, 149, 0.15) 0%, rgba(3, 7, 18, 1) 75%)',
         }}
@@ -206,6 +205,7 @@ export function GlobalLoader({ onComplete }: GlobalLoaderProps) {
           </div>
         </div>
       </motion.div>
+      )}
     </AnimatePresence>
   );
 }

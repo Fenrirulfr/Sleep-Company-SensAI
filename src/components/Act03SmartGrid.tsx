@@ -2,7 +2,6 @@ import React, { useEffect, useRef, useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { WebGLSequenceViewer } from './WebGLSequenceViewer';
 import { ExperiencePanel } from './ExperiencePanel';
 
 gsap.registerPlugin(ScrollTrigger);
@@ -80,15 +79,28 @@ const LAYER_HOTSPOTS: LayerHotspot[] = [
 
 interface Act03Props {
   onOpenTrialModal?: () => void;
+  progress?: number;
 }
 
-export function Act03SmartGrid({ onOpenTrialModal }: Act03Props) {
+export function Act03SmartGrid({ onOpenTrialModal, progress: customProgress }: Act03Props) {
   const sectionRef = useRef<HTMLDivElement>(null);
-  const [progress, setProgress] = useState(0);
-  const [isHoveringGrid, setIsHoveringGrid] = useState(false);
+  const [internalProgress, setInternalProgress] = useState(0);
   const [activeHotspot, setActiveHotspot] = useState<LayerHotspot>(LAYER_HOTSPOTS[1]);
 
+  const progress = customProgress !== undefined ? customProgress : internalProgress;
+
   useEffect(() => {
+    if (progress < 0.35) {
+      setActiveHotspot(LAYER_HOTSPOTS[0]);
+    } else if (progress < 0.7) {
+      setActiveHotspot(LAYER_HOTSPOTS[1]);
+    } else {
+      setActiveHotspot(LAYER_HOTSPOTS[2]);
+    }
+  }, [progress]);
+
+  useEffect(() => {
+    if (customProgress !== undefined) return;
     if (!sectionRef.current) return;
 
     let tl: gsap.core.Timeline | null = null;
@@ -103,7 +115,7 @@ export function Act03SmartGrid({ onOpenTrialModal }: Act03Props) {
           anticipatePin: 1,
           refreshPriority: 5,
           onUpdate: (self) => {
-            setProgress(self.progress);
+            setInternalProgress(self.progress);
           }
         }
       });
@@ -115,83 +127,161 @@ export function Act03SmartGrid({ onOpenTrialModal }: Act03Props) {
       clearTimeout(timer);
       if (tl) tl.kill();
     };
-  }, []);
+  }, [customProgress]);
+
+  const handleLayerClick = (index: number) => {
+    const triggers = ScrollTrigger.getAll();
+    // Try to find the master container ScrollTrigger by id or trigger reference
+    const master = triggers.find(
+      (t) => 
+        (t.trigger as HTMLElement)?.id === 'cinematic-container' || 
+        (t.vars as any)?.id === 'cinematic-container'
+    ) || triggers[0];
+
+    if (master) {
+      // Act 3 occupies progress from 0.65 to 1.0.
+      // We map index 0, 1, 2 into points within this 0.65-1.0 progress block.
+      const targetAct3Progs = [0.15, 0.50, 0.85];
+      const globalP = 0.65 + targetAct3Progs[index] * 0.35;
+      const targetScroll = master.start + globalP * (master.end - master.start);
+      
+      window.scrollTo({
+        top: targetScroll,
+        behavior: 'smooth'
+      });
+    }
+  };
 
   return (
     <section 
       id="act-03"
       ref={sectionRef}
-      className="relative w-full h-screen flex items-center overflow-hidden bg-white"
+      className="relative w-full h-screen flex items-center overflow-hidden bg-transparent"
       aria-label="Inside SmartGRID Discovery"
     >
-      {/* Background WebGL Viewport (Fabric lifts as you scroll) */}
-      <div 
-        className={`absolute inset-0 z-0 transition-all duration-700 ${
-          isHoveringGrid ? 'scale-[1.02] brightness-105' : 'scale-100'
-        }`}
-        onMouseEnter={() => setIsHoveringGrid(true)}
-        onMouseLeave={() => setIsHoveringGrid(false)}
-      >
-        <WebGLSequenceViewer urls={SMARTGRID_SEQUENCE} progress={progress} />
+      {/* Interactive pulsing visual hotspots layered over the 3D visual mattress */}
+      <div className="absolute inset-0 z-20 pointer-events-none">
+        {LAYER_HOTSPOTS.map((layer, idx) => {
+          const isActive = activeHotspot.id === layer.id;
+          return (
+            <button
+              key={`hotspot-${layer.id}`}
+              onClick={() => handleLayerClick(idx)}
+              className="absolute pointer-events-auto group focus:outline-none -translate-x-1/2 -translate-y-1/2 transition-all duration-500"
+              style={{ top: layer.top, left: layer.left }}
+              title={`View ${layer.title}`}
+            >
+              <div className="relative flex items-center justify-center">
+                {/* Outer pulsing ring */}
+                <div className={`absolute w-9 h-9 rounded-full transition-all duration-500 ${
+                  isActive 
+                    ? 'bg-[#003B95]/20 animate-ping opacity-100 scale-125' 
+                    : 'bg-slate-900/5 group-hover:bg-[#003B95]/10 group-hover:scale-110 opacity-60'
+                }`} />
+                {/* Secondary core ring */}
+                <div className={`absolute w-6 h-6 rounded-full border transition-all duration-300 ${
+                  isActive 
+                    ? 'border-[#003B95] bg-white scale-110 shadow-lg shadow-slate-950/10' 
+                    : 'border-slate-300 bg-white/90 group-hover:border-[#003B95]'
+                }`} />
+                {/* Center active dot */}
+                <div className={`w-2 h-2 rounded-full transition-all duration-300 ${
+                  isActive ? 'bg-[#003B95]' : 'bg-slate-400 group-hover:bg-[#003B95]'
+                }`} />
+                
+                {/* Floating Tooltip Label */}
+                <div className={`absolute left-8 px-2.5 py-1 rounded-md bg-slate-900/90 backdrop-blur-md text-[10px] font-mono uppercase tracking-wider text-white whitespace-nowrap transition-all duration-300 shadow-md ${
+                  isActive 
+                    ? 'opacity-100 translate-x-0' 
+                    : 'opacity-0 -translate-x-2 pointer-events-none group-hover:opacity-100 group-hover:translate-x-1'
+                }`}>
+                  {layer.title}
+                </div>
+              </div>
+            </button>
+          );
+        })}
       </div>
 
-      {/* Discovery Canvas Overlay */}
-      <div className="absolute inset-0 z-10 section-padding flex flex-col justify-between pointer-events-none">
+      {/* Discovery Canvas Overlay with split layout to prevent vertical cutting-off */}
+      <div className="absolute inset-0 z-10 px-6 py-12 md:px-12 md:py-16 lg:px-20 lg:py-24 flex flex-col justify-between lg:grid lg:grid-cols-12 lg:items-center lg:gap-12 pointer-events-none">
         
-        {/* Header Title */}
-        <div className="max-w-xl pointer-events-auto">
-          <p className="text-xs font-mono uppercase tracking-widest text-[#003B95] mb-2 font-semibold">
-            Inside the Core
-          </p>
-          <h2 className="text-4xl md:text-5xl lg:text-6xl font-light font-serif tracking-tight text-slate-900 leading-tight">
-            Patented <span className="italic text-[#003B95]">SmartGRID®</span> technology.
-          </h2>
-          <p className="text-sm text-slate-500 mt-2 font-mono uppercase tracking-wider">
-            {progress < 0.2 ? 'Scroll to lift the cover' : isHoveringGrid ? 'Hovering Internal Core' : 'Select a hotspot to explore'}
-          </p>
-        </div>
+        {/* Left Column: Header Title and Interactive Vertical Progress Stepper */}
+        <div className="lg:col-span-5 flex flex-col h-full justify-between lg:justify-center lg:gap-12 pointer-events-auto">
+          <div>
+            <p className="text-xs font-mono uppercase tracking-[0.2em] text-[#003B95] mb-2 font-semibold">
+              Inside the Core
+            </p>
+            <h2 className="text-3xl md:text-4xl lg:text-[44px] font-light font-serif tracking-tight text-slate-900 leading-tight">
+              Patented <span className="italic text-[#003B95] font-normal">SmartGRID®</span> technology.
+            </h2>
+            <p className="text-sm text-slate-500 mt-2 font-mono uppercase tracking-wider">
+              {progress < 0.2 ? 'Scroll to reveal internal core' : 'Adaptive comfort revealed layer by layer'}
+            </p>
+          </div>
 
-        {/* Hotspots over layers */}
-        {progress > 0.05 && (
-          <div className="absolute inset-0 pointer-events-auto">
-            {LAYER_HOTSPOTS.map((hotspot) => {
-              const isActive = activeHotspot.id === hotspot.id;
+          {/* Elegant Interactive Layer Sidebar Timeline */}
+          <div className="hidden lg:flex flex-col gap-5 mt-6 relative pl-4 border-l border-slate-200/60">
+            {LAYER_HOTSPOTS.map((layer, idx) => {
+              const isActive = activeHotspot.id === layer.id;
               return (
                 <button
-                  key={hotspot.id}
-                  onClick={() => setActiveHotspot(hotspot)}
-                  onMouseEnter={() => setActiveHotspot(hotspot)}
-                  className="absolute -translate-x-1/2 -translate-y-1/2 cursor-pointer focus:outline-none group"
-                  style={{ top: hotspot.top, left: hotspot.left }}
-                  aria-label={`Explore ${hotspot.title}`}
+                  key={`timeline-${layer.id}`}
+                  onClick={() => handleLayerClick(idx)}
+                  className="group text-left focus:outline-none transition-all duration-300"
                 >
-                  <span className="relative flex h-9 w-9 items-center justify-center">
-                    <span className={`animate-ping absolute inline-flex h-full w-full rounded-full ${
-                      isActive ? 'bg-[#003B95]/40' : 'bg-slate-400/20'
-                    }`} />
-                    <span className={`relative inline-flex items-center justify-center rounded-full h-5 w-5 text-[10px] font-mono font-bold transition-all duration-300 ${
-                      isActive ? 'bg-[#003B95] text-white scale-125' : 'bg-white text-slate-700 border border-slate-300 group-hover:scale-110'
-                    }`}>
-                      +
-                    </span>
-                  </span>
+                  <div className="flex items-start gap-4">
+                    {/* Active Line Segment Dot */}
+                    <div className="relative flex items-center justify-center mt-1">
+                      <div className={`w-2.5 h-2.5 rounded-full transition-all duration-300 ${
+                        isActive 
+                          ? 'bg-[#003B95] scale-125 ring-4 ring-[#003B95]/15' 
+                          : 'bg-slate-300 group-hover:bg-[#003B95]/50'
+                      }`} />
+                    </div>
+                    <div>
+                      <p className={`text-[9px] font-mono tracking-widest transition-colors duration-300 uppercase ${
+                        isActive ? 'text-[#003B95] font-semibold' : 'text-slate-400'
+                      }`}>
+                        {layer.badge}
+                      </p>
+                      <h4 className={`text-sm font-sans font-medium transition-colors duration-300 ${
+                        isActive ? 'text-slate-950' : 'text-slate-500 group-hover:text-slate-800'
+                      }`}>
+                        {layer.title}
+                      </h4>
+                    </div>
+                  </div>
                 </button>
               );
             })}
           </div>
-        )}
+        </div>
 
-        {/* Floating Reusable Experience Panel */}
-        <div className="self-end w-full max-w-md pointer-events-auto">
-          {progress > 0.05 && (
-            <ExperiencePanel
-              badge={activeHotspot.badge}
-              title={activeHotspot.title}
-              subtitle={activeHotspot.subtitle}
-              description={activeHotspot.description}
-              metrics={activeHotspot.metrics}
-            />
-          )}
+        {/* Right Column: Floating Reusable Experience Panel (Glass Box) */}
+        <div className="lg:col-span-7 flex justify-end items-center h-full pointer-events-auto">
+          <div className="w-full max-w-[440px] lg:self-center">
+            <AnimatePresence mode="wait">
+              {progress > 0.05 && (
+                <motion.div
+                  key={activeHotspot.id}
+                  initial={{ opacity: 0, x: 20, scale: 0.98 }}
+                  animate={{ opacity: 1, x: 0, scale: 1 }}
+                  exit={{ opacity: 0, x: -20, scale: 0.98 }}
+                  transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+                >
+                  <ExperiencePanel
+                    badge={activeHotspot.badge}
+                    title={activeHotspot.title}
+                    subtitle={activeHotspot.subtitle}
+                    description={activeHotspot.description}
+                    metrics={activeHotspot.metrics}
+                    className="w-full shadow-2xl"
+                  />
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
         </div>
 
       </div>

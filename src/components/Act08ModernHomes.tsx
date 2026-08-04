@@ -77,16 +77,17 @@ export function Act08ModernHomes() {
   return (
     <section 
       id="act-08"
-      className="relative w-full min-h-screen overflow-hidden flex items-center justify-center bg-slate-950 text-white section-padding"
+      className="relative w-full min-h-screen overflow-hidden flex items-center justify-center bg-slate-950 text-white section-padding py-16 lg:py-24"
       aria-label="Designed For Modern Homes"
     >
       {/* Background Room Transition Layer */}
       <div className="absolute inset-0 z-0 overflow-hidden">
-        <AnimatePresence mode="wait">
+        <AnimatePresence mode="popLayout">
           <motion.img
             key={activeStyleId}
             src={activeConfig.image}
             alt={activeConfig.label}
+            referrerPolicy="no-referrer"
             initial={{ opacity: 0, scale: 1.05 }}
             animate={{ opacity: 0.5, scale: 1 }}
             exit={{ opacity: 0, scale: 0.98 }}
@@ -98,32 +99,32 @@ export function Act08ModernHomes() {
       </div>
 
       {/* Main Container */}
-      <div className="relative z-10 section-container grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+      <div className="relative z-10 section-container grid grid-cols-1 lg:grid-cols-12 gap-[var(--spacing-3xl)] items-center">
         
         {/* Left Column: Title & Room Selectors (6 cols) */}
-        <div className="lg:col-span-6 space-y-8">
+        <div className="lg:col-span-6 space-y-[var(--spacing-xl)]">
           <div>
-            <p className="text-xs font-mono uppercase tracking-widest text-blue-400 mb-2 font-semibold">
+            <p className="text-xs font-mono uppercase tracking-widest text-blue-400 mb-[var(--spacing-xs)] font-semibold">
               Designed For Modern Homes
             </p>
             <h2 className="text-4xl md:text-5xl lg:text-6xl font-light font-serif tracking-tight leading-tight">
               Harmonizes with <br />
               <span className="italic text-blue-300">any interior vision.</span>
             </h2>
-            <p className="text-slate-300 mt-4 leading-relaxed text-sm md:text-base max-w-[560px]">
+            <p className="text-slate-300 mt-[var(--spacing-md)] leading-relaxed text-sm md:text-base max-w-[560px]">
               Switch room environments to see how SensAI seamlessly integrates into diverse architectural aesthetics.
             </p>
           </div>
 
           {/* Style Selector Buttons */}
-          <div className="grid grid-cols-2 gap-3 max-w-md">
+          <div className="grid grid-cols-2 gap-[var(--spacing-sm)] max-w-md">
             {ROOM_STYLES.map((style) => {
               const isActive = activeStyleId === style.id;
               return (
                 <button
                   key={style.id}
                   onClick={() => setActiveStyleId(style.id)}
-                  className={`px-5 py-4 rounded-2xl border text-left transition-all duration-300 cursor-pointer ${
+                  className={`px-[var(--spacing-lg)] py-[var(--spacing-md)] rounded-2xl border text-left transition-all duration-300 cursor-pointer ${
                     isActive
                       ? 'bg-white text-slate-900 border-white shadow-xl scale-[1.02]'
                       : 'bg-white/10 text-white/80 border-white/20 hover:bg-white/20 hover:text-white'

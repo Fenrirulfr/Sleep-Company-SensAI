@@ -72,14 +72,14 @@ export function Act05Layers() {
   const [activeLayer, setActiveLayer] = useState<LayerData>(LAYERS[1]);
 
   return (
-    <section id="act-05" className="min-h-screen bg-white text-slate-900 section-padding flex flex-col justify-center relative overflow-hidden">
+    <section id="act-05" className="min-h-screen bg-white text-slate-900 section-padding py-16 lg:py-24 flex flex-col justify-center relative overflow-hidden">
       
-      <div className="section-container grid grid-cols-1 lg:grid-cols-12 gap-12 items-center relative z-10">
+      <div className="section-container grid grid-cols-1 lg:grid-cols-12 gap-[var(--spacing-3xl)] items-center relative z-10">
         
         {/* Left Column: Stacked Layer Visualization (7 cols) */}
-        <div className="lg:col-span-7 flex flex-col items-center justify-center space-y-3">
-          <div className="w-full max-w-xl space-y-3">
-            <div className="text-xs font-mono uppercase tracking-widest text-[#003B95] mb-4 font-semibold">
+        <div className="lg:col-span-7 flex flex-col items-center justify-center space-y-[var(--spacing-sm)]">
+          <div className="w-full max-w-xl space-y-[var(--spacing-sm)]">
+            <div className="text-xs font-mono uppercase tracking-widest text-[#003B95] mb-[var(--spacing-md)] font-semibold">
               Interactive Anatomy — Hover Any Layer
             </div>
 
@@ -96,7 +96,7 @@ export function Act05Layers() {
                     y: isSelected ? -4 : 0
                   }}
                   transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
-                  className={`p-6 md:p-8 rounded-[20px] border cursor-pointer transition-all duration-300 bg-gradient-to-r ${layer.color} ${
+                  className={`p-[var(--spacing-lg)] md:p-[var(--spacing-xl)] rounded-[20px] border cursor-pointer transition-all duration-300 bg-gradient-to-r ${layer.color} ${
                     isSelected
                       ? 'border-[#003B95] shadow-xl shadow-[#003B95]/10 ring-2 ring-[#003B95]/20'
                       : 'border-slate-200/80 hover:border-slate-300 hover:opacity-90'
@@ -104,7 +104,7 @@ export function Act05Layers() {
                 >
                   <div className="flex items-center justify-between">
                     <div>
-                      <span className="text-[10px] font-mono tracking-widest uppercase text-[#003B95] font-bold block mb-1">
+                      <span className="text-[10px] font-mono tracking-widest uppercase text-[#003B95] font-bold block mb-[var(--spacing-3xs)]">
                         {layer.badge}
                       </span>
                       <h3 className="text-xl md:text-2xl font-serif font-light text-slate-900">
@@ -122,15 +122,15 @@ export function Act05Layers() {
         </div>
 
         {/* Right Column: Editorial & Single Floating Experience Panel (5 cols) */}
-        <div className="lg:col-span-5 space-y-8">
+        <div className="lg:col-span-5 space-y-[var(--spacing-xl)]">
           <div>
-            <p className="text-xs font-mono uppercase tracking-widest text-[#003B95] mb-2 font-semibold">
+            <p className="text-xs font-mono uppercase tracking-widest text-[#003B95] mb-[var(--spacing-xs)] font-semibold">
               Experience Every Layer
             </p>
             <h2 className="text-4xl md:text-5xl font-light font-serif tracking-tight leading-tight">
               Engineered for <span className="italic text-[#003B95]">cellular recovery.</span>
             </h2>
-            <p className="text-slate-600 mt-4 leading-relaxed text-sm md:text-base max-w-[560px]">
+            <p className="text-slate-600 mt-[var(--spacing-md)] leading-relaxed text-sm md:text-base max-w-[560px]">
               Each layer serves a dedicated biomechanical purpose. Hover across the anatomical slice to reveal material specifications.
             </p>
           </div>

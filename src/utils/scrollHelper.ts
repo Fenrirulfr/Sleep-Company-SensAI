@@ -18,7 +18,7 @@ export function scrollToAct(domId: string) {
   
   // Find a trigger whose target matches either by element reference or by DOM ID
   const match = triggers.find(
-    (st) => st.trigger === target || st.trigger?.id === domId
+    (st) => st.trigger === target || st.trigger?.id === domId || (st.vars as any)?.id === domId
   );
 
   if (match) {

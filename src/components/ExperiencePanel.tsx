@@ -28,18 +28,18 @@ export function ExperiencePanel({
       animate={{ opacity: 1, y: 0, scale: 1 }}
       exit={{ opacity: 0, y: -10, scale: 0.98 }}
       transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
-      className={`relative rounded-[24px] p-6 md:p-8 backdrop-blur-[28px] transition-all duration-500 shadow-2xl ${
+      className={`relative rounded-[24px] p-6 md:p-8 backdrop-blur-[20px] transition-all duration-300 shadow-xl ${
         dark
           ? 'bg-slate-900/60 border border-white/10 text-white'
-          : 'bg-white/75 border border-white/80 text-slate-900 shadow-slate-900/5'
+          : 'bg-white/90 border border-black/[0.06] text-slate-900 shadow-slate-900/[0.04]'
       } ${className}`}
       style={{
         boxShadow: dark
           ? '0 20px 50px rgba(0, 0, 0, 0.4)'
-          : '0 20px 50px rgba(0, 59, 149, 0.08)',
+          : '0 20px 40px rgba(0, 0, 0, 0.03)',
       }}
     >
-      <AnimatePresence mode="wait">
+      <AnimatePresence mode="popLayout">
         <motion.div
           key={title + (subtitle || '')}
           initial={{ opacity: 0, y: 8 }}

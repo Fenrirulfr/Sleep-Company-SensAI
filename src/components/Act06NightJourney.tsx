@@ -73,7 +73,7 @@ export function Act06NightJourney() {
   return (
     <section 
       id="act-06"
-      className="relative w-full min-h-screen overflow-hidden bg-slate-950 text-white flex items-center justify-center section-padding"
+      className="relative w-full min-h-screen overflow-hidden bg-slate-950 text-white flex items-center justify-center section-padding py-16 lg:py-24"
       aria-label="Your Night Journey"
     >
       {/* Luxury Bedroom Ambient Background Image & Dynamic Lighting Overlays */}
@@ -81,10 +81,11 @@ export function Act06NightJourney() {
         <img 
           src="https://images.unsplash.com/photo-1616594039964-ae9021a400a0?q=80&w=2000" 
           alt="Luxury Bedroom Scene" 
+          referrerPolicy="no-referrer"
           className="w-full h-full object-cover opacity-40 scale-105 transition-transform duration-[8s] ease-out"
         />
 
-        <AnimatePresence mode="wait">
+        <AnimatePresence mode="popLayout">
           <motion.div
             key={time}
             initial={{ opacity: 0 }}
@@ -102,25 +103,25 @@ export function Act06NightJourney() {
       </div>
 
       {/* Main Content Layout */}
-      <div className="relative z-10 section-container grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+      <div className="relative z-10 section-container grid grid-cols-1 lg:grid-cols-12 gap-[var(--spacing-3xl)] items-center">
         
         {/* Left Column: Editorial & Selector (6 cols) */}
-        <div className="lg:col-span-6 space-y-8">
+        <div className="lg:col-span-6 space-y-[var(--spacing-xl)]">
           <div>
-            <p className="text-xs font-mono uppercase tracking-widest text-blue-400 mb-2 font-semibold">
+            <p className="text-xs font-mono uppercase tracking-widest text-blue-400 mb-[var(--spacing-xs)] font-semibold">
               Your Night Journey
             </p>
             <h2 className="text-4xl md:text-5xl lg:text-6xl font-light font-serif tracking-tight leading-tight">
               Circadian rhythm <br />
               <span className="italic text-blue-300">synchronization.</span>
             </h2>
-            <p className="text-slate-300 mt-4 leading-relaxed text-sm md:text-base max-w-[560px]">
+            <p className="text-slate-300 mt-[var(--spacing-md)] leading-relaxed text-sm md:text-base max-w-[560px]">
               SensAI actively modulates thermal and ergonomic support across all phases of your night.
             </p>
           </div>
 
           {/* Time Selector Controls */}
-          <div className="inline-flex gap-2 p-2 bg-white/10 backdrop-blur-2xl border border-white/20 rounded-full">
+          <div className="inline-flex gap-[var(--spacing-xs)] p-[var(--spacing-xs)] bg-white/10 backdrop-blur-2xl border border-white/20 rounded-full">
             {TIME_SETTINGS.map((setting) => {
               const Icon = setting.icon;
               const isActive = time === setting.id;
@@ -128,7 +129,7 @@ export function Act06NightJourney() {
                 <button
                   key={setting.id}
                   onClick={() => setTime(setting.id)}
-                  className={`relative px-6 py-3 rounded-full text-xs font-mono uppercase tracking-widest flex items-center gap-2 transition-all duration-500 cursor-pointer ${
+                  className={`relative px-[var(--spacing-lg)] py-[var(--spacing-sm)] rounded-full text-xs font-mono uppercase tracking-widest flex items-center gap-[var(--spacing-xs)] transition-all duration-500 cursor-pointer ${
                     isActive ? 'text-slate-900 font-semibold' : 'text-white/80 hover:text-white'
                   }`}
                 >
