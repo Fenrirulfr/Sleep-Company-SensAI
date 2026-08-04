@@ -1,0 +1,6 @@
+{
+  "name": "SensAI Mattress | The Sleep Company",
+  "description": "An immersive AI-powered luxury sleep experience for The Sleep Company's SensAI Mattress.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
