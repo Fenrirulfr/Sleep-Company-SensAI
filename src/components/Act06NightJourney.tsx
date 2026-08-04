@@ -1,85 +1,166 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { Sun, Sunset, Moon, Sunrise } from 'lucide-react';
+import { Sun, Sunset, Moon } from 'lucide-react';
+import { ExperiencePanel } from './ExperiencePanel';
 
-type TimeOfDay = 'morning' | 'evening' | 'night' | 'sunrise';
+type TimeOfDay = 'morning' | 'evening' | 'night';
 
-const TIMES: { id: TimeOfDay; label: string; icon: React.FC<any>; bg: string; overlay: string }[] = [
-  { id: 'morning', label: 'Morning', icon: Sun, bg: 'https://images.unsplash.com/photo-1616594039964-ae9021a400a0?q=80&w=2000', overlay: 'bg-amber-100/10' },
-  { id: 'evening', label: 'Evening', icon: Sunset, bg: 'https://images.unsplash.com/photo-1616594039964-ae9021a400a0?q=80&w=2000', overlay: 'bg-orange-900/30' },
-  { id: 'night', label: 'Night', icon: Moon, bg: 'https://images.unsplash.com/photo-1616594039964-ae9021a400a0?q=80&w=2000', overlay: 'bg-slate-900/70' },
-  { id: 'sunrise', label: 'Sunrise', icon: Sunrise, bg: 'https://images.unsplash.com/photo-1616594039964-ae9021a400a0?q=80&w=2000', overlay: 'bg-rose-500/20' },
+interface TimeSetting {
+  id: TimeOfDay;
+  label: string;
+  icon: React.FC<any>;
+  badge: string;
+  title: string;
+  subtitle: string;
+  description: string;
+  bgGradient: string;
+  lightingOverlay: string;
+  metrics: Array<{ label: string; value: string | number; unit?: string }>;
+}
+
+const TIME_SETTINGS: TimeSetting[] = [
+  {
+    id: 'morning',
+    label: 'Morning',
+    icon: Sun,
+    badge: '6:30 AM — NATURAL AWAKENING',
+    title: 'Sunrise Thermal Ramp',
+    subtitle: 'ENERGIZING CIRCADIAN TRANSITION',
+    description: 'SensAI subtly warms the perimeter cells 15 minutes before your alarm, gently signaling your endocrine system to wake.',
+    bgGradient: 'from-amber-100/40 via-orange-50/20 to-slate-900/60',
+    lightingOverlay: 'radial-gradient(circle at 80% 20%, rgba(253, 230, 138, 0.4) 0%, transparent 60%)',
+    metrics: [
+      { label: 'Thermal Lift', value: '+1.5', unit: '°C' },
+      { label: 'Awakening Quality', value: '100%', unit: 'refreshed' }
+    ]
+  },
+  {
+    id: 'evening',
+    label: 'Evening',
+    icon: Sunset,
+    badge: '10:00 PM — SLEEP PREPARATION',
+    title: 'Pre-Sleep Cooling Down',
+    subtitle: 'MELATONIN SYNC',
+    description: 'Active thermal reduction dissipates residual body heat, lowering core temperature to trigger natural sleep onset.',
+    bgGradient: 'from-amber-900/40 via-indigo-950/60 to-slate-950',
+    lightingOverlay: 'radial-gradient(circle at 20% 40%, rgba(249, 115, 22, 0.25) 0%, transparent 70%)',
+    metrics: [
+      { label: 'Core Temp Shift', value: '-1.2', unit: '°C' },
+      { label: 'Sleep Onset', value: '12', unit: 'mins' }
+    ]
+  },
+  {
+    id: 'night',
+    label: 'Night',
+    icon: Moon,
+    badge: '2:00 AM — DEEP REM RECOVERY',
+    title: 'Zero-Interruption REM',
+    subtitle: 'DEEP CELLULAR RESTORATION',
+    description: 'Constant thermal stability and continuous pressure adaptation maintain maximum slow-wave delta sleep.',
+    bgGradient: 'from-[#001D4A]/80 via-slate-950 to-black',
+    lightingOverlay: 'radial-gradient(circle at 50% 30%, rgba(59, 130, 246, 0.2) 0%, transparent 60%)',
+    metrics: [
+      { label: 'Delta Sleep Lift', value: '+35%' },
+      { label: 'Micro-Arousals', value: '0' }
+    ]
+  }
 ];
 
 export function Act06NightJourney() {
   const [time, setTime] = useState<TimeOfDay>('night');
-
-  const activeTime = TIMES.find(t => t.id === time) || TIMES[2];
+  const activeSetting = TIME_SETTINGS.find(t => t.id === time) || TIME_SETTINGS[2];
 
   return (
     <section 
       id="act-06"
-      className="relative w-full h-screen overflow-hidden bg-slate-900 flex items-center justify-center"
+      className="relative w-full min-h-screen overflow-hidden bg-slate-950 text-white flex items-center justify-center py-16 md:py-20 lg:py-24 px-6 md:px-12"
       aria-label="Your Night Journey"
     >
-      {/* Background Image with Time-based Overlays */}
-      <div className="absolute inset-0 z-0">
+      {/* Luxury Bedroom Ambient Background Image & Dynamic Lighting Overlays */}
+      <div className="absolute inset-0 z-0 overflow-hidden">
         <img 
-          src={activeTime.bg} 
-          alt="Luxury Bedroom" 
-          className="w-full h-full object-cover transition-transform duration-[10s] ease-out scale-105"
+          src="https://images.unsplash.com/photo-1616594039964-ae9021a400a0?q=80&w=2000" 
+          alt="Luxury Bedroom Scene" 
+          className="w-full h-full object-cover opacity-40 scale-105 transition-transform duration-[8s] ease-out"
         />
-        <AnimatePresence>
+
+        <AnimatePresence mode="wait">
           <motion.div
             key={time}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 1.5, ease: 'easeInOut' }}
-            className={`absolute inset-0 ${activeTime.overlay} mix-blend-multiply`}
+            transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
+            className={`absolute inset-0 bg-gradient-to-b ${activeSetting.bgGradient}`}
           />
         </AnimatePresence>
+
+        <div 
+          className="absolute inset-0 pointer-events-none transition-all duration-1000"
+          style={{ background: activeSetting.lightingOverlay }}
+        />
       </div>
 
-      <div className="relative z-10 w-full max-w-7xl mx-auto px-8 flex justify-between items-end h-full pb-24 pointer-events-none">
+      {/* Main Content Layout */}
+      <div className="relative z-10 w-full max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
         
-        {/* Experience Panel */}
-        <div className="w-[320px] bg-white/10 backdrop-blur-3xl border border-white/20 shadow-2xl rounded-[24px] p-8 pointer-events-auto">
-          <div className="w-8 h-[1px] bg-white/50 mb-6" />
-          <h3 className="text-xl font-serif-editorial text-white mb-3 font-light">
-            Your Night Journey
-          </h3>
-          <p className="text-xs text-white/70 leading-relaxed font-light">
-            SensAI adapts to your body's thermal shifts from dusk till dawn, ensuring uninterrupted recovery regardless of the room's environment.
-          </p>
+        {/* Left Column: Editorial & Selector (6 cols) */}
+        <div className="lg:col-span-6 space-y-8">
+          <div>
+            <p className="text-xs font-mono uppercase tracking-widest text-blue-400 mb-2 font-semibold">
+              Your Night Journey
+            </p>
+            <h2 className="text-4xl md:text-5xl lg:text-6xl font-light font-serif tracking-tight leading-tight">
+              Circadian rhythm <br />
+              <span className="italic text-blue-300">synchronization.</span>
+            </h2>
+            <p className="text-slate-300 mt-4 leading-relaxed text-sm md:text-base max-w-[560px]">
+              SensAI actively modulates thermal and ergonomic support across all phases of your night.
+            </p>
+          </div>
+
+          {/* Time Selector Controls */}
+          <div className="inline-flex gap-2 p-2 bg-white/10 backdrop-blur-2xl border border-white/20 rounded-full">
+            {TIME_SETTINGS.map((setting) => {
+              const Icon = setting.icon;
+              const isActive = time === setting.id;
+              return (
+                <button
+                  key={setting.id}
+                  onClick={() => setTime(setting.id)}
+                  className={`relative px-6 py-3 rounded-full text-xs font-mono uppercase tracking-widest flex items-center gap-2 transition-all duration-500 cursor-pointer ${
+                    isActive ? 'text-slate-900 font-semibold' : 'text-white/80 hover:text-white'
+                  }`}
+                >
+                  {isActive && (
+                    <motion.div
+                      layoutId="activeTimeBg"
+                      className="absolute inset-0 bg-white rounded-full shadow-lg"
+                      transition={{ type: 'spring', bounce: 0.2, duration: 0.6 }}
+                    />
+                  )}
+                  <span className="relative z-10 flex items-center gap-2">
+                    <Icon className="w-4 h-4" />
+                    <span>{setting.label}</span>
+                  </span>
+                </button>
+              );
+            })}
+          </div>
         </div>
 
-        {/* Circular Time Selector */}
-        <div className="pointer-events-auto flex gap-4 bg-white/10 backdrop-blur-2xl border border-white/20 p-2 rounded-full">
-          {TIMES.map((t) => {
-            const Icon = t.icon;
-            const isActive = time === t.id;
-            return (
-              <button
-                key={t.id}
-                onClick={() => setTime(t.id)}
-                className={`relative p-4 rounded-full transition-all duration-500 cursor-pointer ${isActive ? 'text-[#003B95]' : 'text-white hover:text-white/80'}`}
-                aria-label={`Set time to ${t.label}`}
-              >
-                {isActive && (
-                  <motion.div
-                    layoutId="activeTimeBg"
-                    className="absolute inset-0 bg-white rounded-full shadow-lg"
-                    initial={false}
-                    transition={{ type: 'spring', bounce: 0.2, duration: 0.6 }}
-                  />
-                )}
-                <span className="relative z-10">
-                  <Icon className="w-5 h-5" />
-                </span>
-              </button>
-            );
-          })}
+        {/* Right Column: Experience Panel (6 cols) */}
+        <div className="lg:col-span-6 flex justify-end">
+          <div className="w-full max-w-md">
+            <ExperiencePanel
+              dark={true}
+              badge={activeSetting.badge}
+              title={activeSetting.title}
+              subtitle={activeSetting.subtitle}
+              description={activeSetting.description}
+              metrics={activeSetting.metrics}
+            />
+          </div>
         </div>
 
       </div>

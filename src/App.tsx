@@ -9,6 +9,7 @@ import { Act03SmartGrid } from './components/Act03SmartGrid';
 import { Act04BodyAdapt } from './components/Act04BodyAdapt';
 import { Act05Layers } from './components/Act05Layers';
 import { Act06NightJourney } from './components/Act06NightJourney';
+import { Act07SleepInsights } from './components/Act07SleepInsights';
 import { Act08ModernHomes } from './components/Act08ModernHomes';
 import { Act09Experience } from './components/Act09Experience';
 import { TrialModal } from './components/TrialModal';
@@ -46,13 +47,14 @@ export default function App() {
       { id: 'body-adapt', domId: 'act-04' },
       { id: 'layers', domId: 'act-05' },
       { id: 'night-journey', domId: 'act-06' },
+      { id: 'sleep-insights', domId: 'act-07' },
       { id: 'modern-homes', domId: 'act-08' },
       { id: 'experience', domId: 'act-09' }
     ];
 
     const observerOptions = {
       root: null,
-      rootMargin: '-40% 0px -40% 0px', // Triggers as each section occupies the viewport core
+      rootMargin: '-40% 0px -40% 0px',
       threshold: 0,
     };
 
@@ -63,10 +65,7 @@ export default function App() {
           if (matchedAct) {
             setCurrentActId(matchedAct.id);
             
-            // Update concierge based on section
-            if (matchedAct.id === 'arrival') {
-              setConciergeState('explore-layers');
-            } else if (matchedAct.id === 'sensai') {
+            if (matchedAct.id === 'arrival' || matchedAct.id === 'sensai') {
               setConciergeState('explore-layers');
             } else if (matchedAct.id === 'smartgrid') {
               setConciergeState('try-side-sleeper');
@@ -75,10 +74,10 @@ export default function App() {
             } else if (matchedAct.id === 'layers') {
               setConciergeState('change-lighting');
             } else if (matchedAct.id === 'night-journey') {
+              setConciergeState('view-recovery');
+            } else if (matchedAct.id === 'sleep-insights') {
               setConciergeState('compare-comfort');
-            } else if (matchedAct.id === 'modern-homes') {
-              setConciergeState('reserve-trial');
-            } else if (matchedAct.id === 'experience') {
+            } else if (matchedAct.id === 'modern-homes' || matchedAct.id === 'experience') {
               setConciergeState('reserve-trial');
             }
           }
@@ -99,13 +98,14 @@ export default function App() {
   }, []);
 
   const handleSelectAct = (id: ActId) => {
-    const actToDOMMap: Partial<Record<ActId, string>> = {
+    const actToDOMMap: Record<ActId, string> = {
       arrival: 'act-01',
       sensai: 'act-02',
       smartgrid: 'act-03',
       'body-adapt': 'act-04',
       layers: 'act-05',
       'night-journey': 'act-06',
+      'sleep-insights': 'act-07',
       'modern-homes': 'act-08',
       experience: 'act-09'
     };
@@ -135,8 +135,9 @@ export default function App() {
           { id: 'body-adapt', actNumber: '04', title: 'Body Adapt', subtitle: 'Designed Around Your Body', navLabel: '04 Body Adapt' },
           { id: 'layers', actNumber: '05', title: 'Layers', subtitle: 'Experience Every Layer', navLabel: '05 Layers' },
           { id: 'night-journey', actNumber: '06', title: 'Night Journey', subtitle: 'Your Night Journey', navLabel: '06 Night Journey' },
-          { id: 'modern-homes', actNumber: '07', title: 'Modern Homes', subtitle: 'Designed For Modern Homes', navLabel: '07 Modern Homes' },
-          { id: 'experience', actNumber: '08', title: 'Experience', subtitle: 'Experience SensAI', navLabel: '08 Experience' }
+          { id: 'sleep-insights', actNumber: '07', title: 'Sleep Insights', subtitle: 'Restorative Dynamics', navLabel: '07 Sleep Insights' },
+          { id: 'modern-homes', actNumber: '08', title: 'Modern Homes', subtitle: 'Designed For Modern Homes', navLabel: '08 Modern Homes' },
+          { id: 'experience', actNumber: '09', title: 'Experience', subtitle: 'Experience SensAI', navLabel: '09 Experience' }
         ]}
         currentActId={currentActId}
         onSelectAct={handleSelectAct}
@@ -155,6 +156,7 @@ export default function App() {
         <Act04BodyAdapt />
         <Act05Layers />
         <Act06NightJourney />
+        <Act07SleepInsights />
         <Act08ModernHomes />
         <Act09Experience onOpenTrialModal={() => setIsTrialModalOpen(true)} />
       </main>
@@ -170,19 +172,19 @@ export default function App() {
             handleSelectAct('body-adapt');
           } else if (conciergeState === 'change-lighting') {
             handleSelectAct('night-journey');
+          } else if (conciergeState === 'view-recovery') {
+            handleSelectAct('sleep-insights');
           } else if (conciergeState === 'compare-comfort') {
             handleSelectAct('modern-homes');
-          } else if (conciergeState === 'view-recovery') {
-            handleSelectAct('experience');
           } else {
-             // Default scroll to next
-            const nextActMap: Partial<Record<ActId, ActId>> = {
+            const nextActMap: Record<ActId, ActId> = {
               'arrival': 'sensai',
               'sensai': 'smartgrid',
               'smartgrid': 'body-adapt',
               'body-adapt': 'layers',
               'layers': 'night-journey',
-              'night-journey': 'modern-homes',
+              'night-journey': 'sleep-insights',
+              'sleep-insights': 'modern-homes',
               'modern-homes': 'experience',
               'experience': 'experience'
             };

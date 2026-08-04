@@ -262,13 +262,13 @@ export function Act01Hero() {
 
           {/* Interactive Layer */}
           <div 
-            className="absolute inset-0 z-10 flex flex-col justify-start pt-[15vh] sm:pt-[20vh] px-[5%] md:px-[10%] pointer-events-none select-none"
+            className="absolute inset-0 z-10 flex flex-col justify-start pt-[10vh] sm:pt-[14vh] px-[5%] md:px-[10%] pointer-events-none select-none"
             style={{ transform: prefersReducedMotion ? 'none' : `translate(${mousePos.x * 0.4}px, ${mousePos.y * 0.4}px)` }}
           >
             
               <motion.div 
                 style={{ opacity: boxOpacity }}
-                className="flex flex-col items-start justify-start max-w-2xl gap-6 sm:gap-8 mt-12 sm:mt-24 p-6 sm:p-8 md:p-12 rounded-3xl bg-white/80 backdrop-blur-2xl border border-white shadow-[0_32px_64px_rgba(0,0,0,0.12)]"
+                className="flex flex-col items-start justify-start max-w-2xl gap-6 sm:gap-8 mt-4 sm:mt-6 p-6 sm:p-8 md:p-10 rounded-3xl bg-white/80 backdrop-blur-2xl border border-white shadow-[0_32px_64px_rgba(0,0,0,0.12)]"
               >
               {/* Headline */}
               <motion.div

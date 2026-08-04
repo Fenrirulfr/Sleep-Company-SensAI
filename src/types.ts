@@ -5,6 +5,7 @@ export type ActId =
   | 'body-adapt'
   | 'layers'
   | 'night-journey'
+  | 'sleep-insights'
   | 'modern-homes'
   | 'experience';
 
