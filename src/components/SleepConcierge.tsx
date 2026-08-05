@@ -62,7 +62,7 @@ export function SleepConcierge({ currentState = 'explore-layers', onAction }: Sl
           animate={{ opacity: 1, y: 0, scale: 1 }}
           exit={{ opacity: 0, y: 20, scale: 0.95 }}
           transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-          className="fixed bottom-8 right-8 z-[100]"
+          className="fixed bottom-6 right-6 md:bottom-8 md:right-8 z-[100]"
         >
           <div className="relative group">
             {/* Soft ambient glow behind the button */}
@@ -70,17 +70,17 @@ export function SleepConcierge({ currentState = 'explore-layers', onAction }: Sl
             
             <button
               onClick={onAction}
-              className="relative flex items-center gap-3 pl-4 pr-5 py-3 bg-white/80 backdrop-blur-xl border border-white/40 rounded-full shadow-[0_8px_30px_rgb(0,0,0,0.08)] hover:shadow-[0_12px_40px_rgb(0,0,0,0.12)] transition-all duration-500 overflow-hidden cursor-pointer"
+              className="relative flex items-center gap-3 pl-3 md:pl-4 pr-4 md:pr-5 py-2.5 md:py-3 bg-white/80 backdrop-blur-xl border border-white/40 rounded-full shadow-[0_8px_30px_rgb(0,0,0,0.08)] hover:shadow-[0_12px_40px_rgb(0,0,0,0.12)] transition-all duration-500 overflow-hidden cursor-pointer"
             >
               <div className="absolute inset-0 bg-gradient-to-r from-white/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
               
-              <div className="w-8 h-8 rounded-full bg-[#003B95]/5 flex items-center justify-center shrink-0">
-                <Icon className="w-4 h-4 text-[#003B95]" />
+              <div className="w-7 h-7 md:w-8 md:h-8 rounded-full bg-[#003B95]/5 flex items-center justify-center shrink-0">
+                <Icon className="w-3.5 h-3.5 md:w-4 md:h-4 text-[#003B95]" />
               </div>
               
               <div className="flex flex-col items-start">
-                <span className="text-[9px] font-semibold tracking-[0.2em] text-slate-400 uppercase">
-                  Sleep Concierge
+                <span className="text-[8px] md:text-[9px] font-semibold tracking-[0.2em] text-slate-400 uppercase">
+                  Concierge
                 </span>
                 <AnimatePresence mode="popLayout">
                   <motion.span
@@ -89,15 +89,15 @@ export function SleepConcierge({ currentState = 'explore-layers', onAction }: Sl
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: -5 }}
                     transition={{ duration: 0.4 }}
-                    className="text-xs font-medium text-slate-800 tracking-wide"
+                    className="text-[11px] md:text-xs font-medium text-slate-800 tracking-wide"
                   >
                     {currentConfig.label}
                   </motion.span>
                 </AnimatePresence>
               </div>
 
-              <div className="w-6 h-6 rounded-full flex items-center justify-center ml-2 group-hover:translate-x-1 transition-transform duration-500">
-                <ArrowRight className="w-3.5 h-3.5 text-slate-400" />
+              <div className="w-5 h-5 md:w-6 md:h-6 rounded-full flex items-center justify-center ml-1 md:ml-2 group-hover:translate-x-1 transition-transform duration-500">
+                <ArrowRight className="w-3 md:w-3.5 h-3 md:h-3.5 text-slate-400" />
               </div>
             </button>
           </div>

@@ -44,6 +44,9 @@ export const TrialModal: React.FC<TrialModalProps> = ({ isOpen, onClose, dnaResu
           exit={{ opacity: 0, scale: 0.95, y: 15 }}
           transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
           className="bg-white rounded-[24px] p-8 sm:p-10 max-w-xl w-full relative border border-slate-100 shadow-[0_30px_70px_rgba(0,0,0,0.12)] max-h-[90vh] overflow-y-auto z-10"
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="modal-title"
         >
           {/* Close button */}
           <button
@@ -51,17 +54,17 @@ export const TrialModal: React.FC<TrialModalProps> = ({ isOpen, onClose, dnaResu
             aria-label="Close Trial Reservation Modal"
             className="absolute top-6 right-6 p-2 rounded-full bg-slate-50 border border-slate-100 text-slate-400 hover:text-slate-800 hover:bg-slate-100 transition-all duration-300 cursor-pointer"
           >
-            <X className="w-4 h-4" />
+            <X className="w-4 h-4" aria-hidden="true" />
           </button>
 
           {submitted ? (
-            <div className="text-center py-6 space-y-5">
+            <div className="text-center py-6 space-y-5" aria-live="assertive">
               <div className="w-16 h-16 rounded-full bg-emerald-50 border border-emerald-100 flex items-center justify-center mx-auto text-emerald-600 animate-pulse">
-                <CheckCircle2 className="w-8 h-8" />
+                <CheckCircle2 className="w-8 h-8" aria-hidden="true" />
               </div>
 
               <div className="space-y-2">
-                <h3 className="text-3xl font-light text-slate-900 font-serif-editorial">
+                <h3 id="modal-title" className="text-3xl font-light text-slate-900 font-serif-editorial">
                   In-Home Trial Reserved
                 </h3>
                 <p className="text-xs text-[#003B95] font-semibold tracking-widest uppercase">
@@ -75,7 +78,7 @@ export const TrialModal: React.FC<TrialModalProps> = ({ isOpen, onClose, dnaResu
 
               <div className="p-5 rounded-2xl bg-slate-50 border border-slate-100 text-left space-y-2.5 max-w-md mx-auto">
                 <h4 className="text-[10px] font-mono font-bold text-slate-400 tracking-wider uppercase">Reservation Summary</h4>
-                <div className="h-[1px] bg-slate-200/60 w-full" />
+                <div className="h-[1px] bg-slate-200/60 w-full" aria-hidden="true" />
                 <div className="space-y-1.5 text-xs text-slate-600">
                   <div className="flex justify-between">
                     <span className="text-slate-400 font-light">Mattress Size:</span>
@@ -106,7 +109,7 @@ export const TrialModal: React.FC<TrialModalProps> = ({ isOpen, onClose, dnaResu
           ) : (
             <form onSubmit={handleSubmit} className="space-y-6">
               <div>
-                <h3 className="text-3xl font-light text-slate-900 font-serif-editorial leading-tight">
+                <h3 id="modal-title" className="text-3xl font-light text-slate-900 font-serif-editorial leading-tight">
                   Reserve 100-Night Trial
                 </h3>
                 <p className="text-xs text-slate-500 mt-1.5">
@@ -116,10 +119,10 @@ export const TrialModal: React.FC<TrialModalProps> = ({ isOpen, onClose, dnaResu
 
               {/* Size Selection */}
               <div>
-                <label className="block text-[10px] font-semibold tracking-wider text-slate-400 uppercase mb-2.5">
+                <label id="size-selection-label" className="block text-[10px] font-semibold tracking-wider text-slate-400 uppercase mb-2.5">
                   Select Mattress Dimension:
                 </label>
-                <div className="grid grid-cols-3 gap-3">
+                <div className="grid grid-cols-3 gap-3" role="radiogroup" aria-labelledby="size-selection-label">
                   {[
                     { id: 'queen', label: 'Queen', dim: '60" x 80"' },
                     { id: 'king', label: 'King', dim: '76" x 80"' },
@@ -128,6 +131,8 @@ export const TrialModal: React.FC<TrialModalProps> = ({ isOpen, onClose, dnaResu
                     <button
                       key={item.id}
                       type="button"
+                      role="radio"
+                      aria-checked={size === item.id}
                       onClick={() => setSize(item.id as 'queen' | 'king' | 'custom')}
                       className={`p-3.5 rounded-2xl text-center border transition-all duration-300 cursor-pointer ${
                         size === item.id
@@ -147,14 +152,16 @@ export const TrialModal: React.FC<TrialModalProps> = ({ isOpen, onClose, dnaResu
               {/* Form Inputs */}
               <div className="space-y-4">
                 <div>
-                  <label className="block text-[10px] font-semibold tracking-wider text-slate-400 uppercase mb-1.5">
+                  <label htmlFor="full-name" className="block text-[10px] font-semibold tracking-wider text-slate-400 uppercase mb-1.5">
                     Full Name
                   </label>
                   <div className="relative">
-                    <User className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
+                    <User className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" aria-hidden="true" />
                     <input
+                      id="full-name"
                       type="text"
                       required
+                      aria-required="true"
                       placeholder="e.g. Elizabeth Mercer"
                       value={formData.name}
                       onChange={(e) => setFormData({ ...formData, name: e.target.value })}
@@ -165,14 +172,16 @@ export const TrialModal: React.FC<TrialModalProps> = ({ isOpen, onClose, dnaResu
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-[10px] font-semibold tracking-wider text-slate-400 uppercase mb-1.5">
+                    <label htmlFor="email-address" className="block text-[10px] font-semibold tracking-wider text-slate-400 uppercase mb-1.5">
                       Email Address
                     </label>
                     <div className="relative">
-                      <Mail className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
+                      <Mail className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" aria-hidden="true" />
                       <input
+                        id="email-address"
                         type="email"
                         required
+                        aria-required="true"
                         placeholder="elizabeth@residences.com"
                         value={formData.email}
                         onChange={(e) => setFormData({ ...formData, email: e.target.value })}
@@ -182,14 +191,16 @@ export const TrialModal: React.FC<TrialModalProps> = ({ isOpen, onClose, dnaResu
                   </div>
 
                   <div>
-                    <label className="block text-[10px] font-semibold tracking-wider text-slate-400 uppercase mb-1.5">
+                    <label htmlFor="phone-number" className="block text-[10px] font-semibold tracking-wider text-slate-400 uppercase mb-1.5">
                       Phone Number
                     </label>
                     <div className="relative">
-                      <Phone className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
+                      <Phone className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" aria-hidden="true" />
                       <input
+                        id="phone-number"
                         type="tel"
                         required
+                        aria-required="true"
                         placeholder="+91 98765 43210"
                         value={formData.phone}
                         onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
@@ -200,14 +211,16 @@ export const TrialModal: React.FC<TrialModalProps> = ({ isOpen, onClose, dnaResu
                 </div>
 
                 <div>
-                  <label className="block text-[10px] font-semibold tracking-wider text-slate-400 uppercase mb-1.5">
+                  <label htmlFor="city-region" className="block text-[10px] font-semibold tracking-wider text-slate-400 uppercase mb-1.5">
                     City / Region
                   </label>
                   <div className="relative">
-                    <MapPin className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
+                    <MapPin className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" aria-hidden="true" />
                     <input
+                      id="city-region"
                       type="text"
                       required
+                      aria-required="true"
                       placeholder="e.g. Mumbai, Maharashtra"
                       value={formData.city}
                       onChange={(e) => setFormData({ ...formData, city: e.target.value })}
@@ -218,7 +231,7 @@ export const TrialModal: React.FC<TrialModalProps> = ({ isOpen, onClose, dnaResu
               </div>
 
               <div className="p-4 rounded-xl bg-slate-50 border border-slate-100 text-xs text-slate-600 flex items-start gap-3">
-                <Truck className="w-4 h-4 text-[#003B95] shrink-0 mt-0.5" />
+                <Truck className="w-4 h-4 text-[#003B95] shrink-0 mt-0.5" aria-hidden="true" />
                 <span className="leading-relaxed">
                   Complimentary unboxing, custom bedroom placement, SmartGRID calibration, and old mattress removal are fully covered by our expert delivery squad.
                 </span>

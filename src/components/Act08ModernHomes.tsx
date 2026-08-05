@@ -23,7 +23,7 @@ const ROOM_STYLES: StyleConfig[] = [
     title: 'Contemporary Luxury',
     subtitle: 'CLEAN GEOMETRIC INTEGRATION',
     description: 'Crisp industrial lines and soft ambient lighting framed by warm natural materials.',
-    image: 'https://images.unsplash.com/photo-1595514535314-1e0e7195d852?q=80&w=2000',
+    image: 'https://lh3.googleusercontent.com/d/1epirihkAg1FV9FMnNvgrZho3SpdsWG3q',
     metrics: [
       { label: 'Room Height', value: 'High' },
       { label: 'Material Tone', value: 'Cool Neutral' }
@@ -107,7 +107,7 @@ export function Act08ModernHomes() {
             <p className="text-xs font-mono uppercase tracking-widest text-blue-400 mb-[var(--spacing-xs)] font-semibold">
               Designed For Modern Homes
             </p>
-            <h2 className="text-4xl md:text-5xl lg:text-6xl font-light font-serif tracking-tight leading-tight">
+            <h2 className="text-headline">
               Harmonizes with <br />
               <span className="italic text-blue-300">any interior vision.</span>
             </h2>
@@ -117,12 +117,19 @@ export function Act08ModernHomes() {
           </div>
 
           {/* Style Selector Buttons */}
-          <div className="grid grid-cols-2 gap-[var(--spacing-sm)] max-w-md">
+          <div 
+            className="grid grid-cols-2 gap-[var(--spacing-sm)] max-w-md"
+            role="tablist"
+            aria-label="Room interior style selection"
+          >
             {ROOM_STYLES.map((style) => {
               const isActive = activeStyleId === style.id;
               return (
                 <button
                   key={style.id}
+                  role="tab"
+                  aria-selected={isActive}
+                  aria-controls={`room-experience-${style.id}`}
                   onClick={() => setActiveStyleId(style.id)}
                   className={`px-[var(--spacing-lg)] py-[var(--spacing-md)] rounded-2xl border text-left transition-all duration-300 cursor-pointer ${
                     isActive
@@ -143,7 +150,12 @@ export function Act08ModernHomes() {
         </div>
 
         {/* Right Column: Reusable Experience Panel (6 cols) */}
-        <div className="lg:col-span-6 flex justify-end">
+        <div 
+          className="lg:col-span-6 flex justify-end"
+          role="tabpanel"
+          id={`room-experience-${activeStyleId}`}
+          aria-live="polite"
+        >
           <div className="w-full max-w-md">
             <ExperiencePanel
               dark={true}

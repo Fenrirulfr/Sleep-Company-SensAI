@@ -175,20 +175,20 @@ export function Act07SleepInsights() {
       <div className="max-w-7xl mx-auto px-6 md:px-12 lg:px-16 relative z-10">
         
         {/* Section Header */}
-        <div className="max-w-3xl mb-16 lg:mb-20">
-          <p className="text-xs font-mono uppercase tracking-[0.2em] text-[#003B95] mb-3 font-semibold">
+        <div className="max-w-3xl mb-12 md:mb-16 lg:mb-20">
+          <p className="text-xs md:text-sm font-mono uppercase tracking-[0.2em] text-[#003B95] mb-3 font-semibold">
             PERSONALIZED EXPERIENCE
           </p>
-          <h2 className="text-4xl md:text-5xl lg:text-[56px] font-light font-serif tracking-tight text-slate-950 leading-tight">
+          <h2 className="text-headline">
             Your SleepDNA<span className="text-[#003B95]">.</span>
           </h2>
-          <p className="text-xl font-light text-slate-500 font-serif-editorial mt-3 italic">
+          <p className="text-lg md:text-xl font-light text-slate-500 font-serif-editorial mt-3 italic">
             Because no two nights are the same.
           </p>
-          <p className="text-[15px] leading-relaxed text-slate-600 mt-5 max-w-[560px]">
+          <p className="text-base md:text-[17px] leading-relaxed text-slate-600 mt-5 max-w-[560px]">
             Explore how your sleeping preferences can influence the comfort experience. Select the options that best describe you to discover a personalized SensAI experience.
           </p>
-          <p className="text-[11px] text-slate-400 mt-3 font-mono">
+          <p className="text-[10px] md:text-[11px] text-slate-400 mt-3 font-mono">
             * This experience is an interactive visualization designed to help you explore mattress preferences. It is not a medical assessment.
           </p>
         </div>
@@ -209,14 +209,17 @@ export function Act07SleepInsights() {
                   exit={{ opacity: 0, y: -30 }}
                   transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
                   className="bg-white/90 border border-slate-200/60 rounded-[32px] p-8 shadow-xl shadow-slate-900/5 space-y-6"
+                  role="region"
+                  aria-labelledby="summary-title"
+                  aria-live="assertive"
                 >
                   <div className="flex items-center gap-3">
                     <div className="p-2 rounded-full bg-[#003B95]/10 text-[#003B95]">
-                      <Compass className="w-5 h-5" />
+                      <Compass className="w-5 h-5" aria-hidden="true" />
                     </div>
                     <div>
                       <span className="text-[9px] font-mono tracking-widest text-[#003B95] uppercase font-bold">bespoke results</span>
-                      <h3 className="text-2xl font-serif text-slate-950 font-light">Your SleepDNA Experience</h3>
+                      <h3 id="summary-title" className="text-2xl font-serif text-slate-950 font-light">Your SleepDNA Experience</h3>
                     </div>
                   </div>
 
@@ -253,15 +256,15 @@ export function Act07SleepInsights() {
                   <div className="flex flex-col sm:flex-row gap-3 pt-2">
                     <button
                       onClick={() => scrollToAct('act-08')}
-                      className="flex-1 py-3 px-5 bg-[#003B95] hover:bg-[#00245E] text-white rounded-full font-medium text-xs tracking-wider uppercase transition-all duration-300 flex items-center justify-center gap-2 shadow-lg shadow-[#003B95]/10"
+                      className="flex-1 py-3 px-5 bg-[#003B95] hover:bg-[#00245E] text-white rounded-full font-medium text-xs tracking-wider uppercase transition-all duration-300 flex items-center justify-center gap-2 shadow-lg shadow-[#003B95]/10 cursor-pointer"
                     >
-                      Explore SensAI <ArrowRight className="w-3.5 h-3.5" />
+                      Explore SensAI <ArrowRight className="w-3.5 h-3.5" aria-hidden="true" />
                     </button>
                     <button
                       onClick={handleReset}
-                      className="py-3 px-5 border border-slate-200 hover:bg-slate-50 text-slate-600 rounded-full font-medium text-xs tracking-wider uppercase transition-all duration-300 flex items-center justify-center gap-2"
+                      className="py-3 px-5 border border-slate-200 hover:bg-slate-50 text-slate-600 rounded-full font-medium text-xs tracking-wider uppercase transition-all duration-300 flex items-center justify-center gap-2 cursor-pointer"
                     >
-                      <RotateCcw className="w-3.5 h-3.5" /> Reset
+                      <RotateCcw className="w-3.5 h-3.5" aria-hidden="true" /> Reset
                     </button>
                   </div>
                 </motion.div>
@@ -273,9 +276,15 @@ export function Act07SleepInsights() {
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
                   className="space-y-8"
+                  role="region"
+                  aria-label="Sleep DNA Configurator"
                 >
                   {/* Step Indicators */}
-                  <div className="flex items-center gap-2 border-b border-slate-200/50 pb-4">
+                  <div 
+                    className="flex items-center gap-2 border-b border-slate-200/50 pb-4"
+                    role="navigation"
+                    aria-label="Configurator steps"
+                  >
                     {[0, 1, 2, 3].map((stepIdx) => {
                       const stepTitles = ["Position", "Comfort", "Climate", "Movement"];
                       const isPast = currentStep > stepIdx;
@@ -284,7 +293,9 @@ export function Act07SleepInsights() {
                         <button
                           key={stepIdx}
                           onClick={() => setCurrentStep(stepIdx)}
-                          className="flex-1 text-left focus:outline-none group"
+                          className="flex-1 text-left focus:outline-none group cursor-pointer"
+                          aria-current={isCurrent ? 'step' : undefined}
+                          aria-label={`Go to ${stepTitles[stepIdx]} step`}
                         >
                           <div className={`h-1 rounded-full transition-all duration-500 ${
                             isCurrent ? 'bg-[#003B95]' : isPast ? 'bg-[#003B95]/60' : 'bg-slate-200'
@@ -305,10 +316,12 @@ export function Act07SleepInsights() {
                       initial={{ opacity: 0, x: 20 }}
                       animate={{ opacity: 1, x: 0 }}
                       className="space-y-4"
+                      role="radiogroup"
+                      aria-labelledby="step-01-title"
                     >
                       <div className="space-y-1">
                         <span className="text-[10px] font-mono text-[#003B95] tracking-widest uppercase">step 01</span>
-                        <h4 className="text-xl font-serif text-slate-950 font-light">How do you sleep?</h4>
+                        <h4 id="step-01-title" className="text-xl font-serif text-slate-950 font-light">How do you sleep?</h4>
                       </div>
                       <div className="grid grid-cols-1 gap-3">
                         {POSITION_OPTIONS.map((opt) => {
@@ -316,11 +329,13 @@ export function Act07SleepInsights() {
                           return (
                             <button
                               key={opt.id}
+                              role="radio"
+                              aria-checked={isSel}
                               onClick={() => {
                                 setPosition(opt.id);
                                 setTimeout(() => setCurrentStep(1), 400);
                               }}
-                              className={`text-left p-4 rounded-2xl border transition-all duration-300 focus:outline-none flex items-start gap-4 ${
+                              className={`text-left p-4 rounded-2xl border transition-all duration-300 focus:outline-none flex items-start gap-4 cursor-pointer ${
                                 isSel 
                                   ? 'bg-white border-[#003B95] ring-2 ring-[#003B95]/5 shadow-md shadow-slate-900/5 scale-[1.01]' 
                                   : 'bg-white/60 hover:bg-white border-slate-200/80 hover:border-slate-300 hover:shadow-sm'
@@ -329,7 +344,7 @@ export function Act07SleepInsights() {
                               <div className={`w-5 h-5 rounded-full border mt-0.5 flex items-center justify-center transition-all duration-300 ${
                                 isSel ? 'border-[#003B95] bg-[#003B95] text-white' : 'border-slate-300 bg-white'
                               }`}>
-                                {isSel && <Check className="w-3 h-3" />}
+                                {isSel && <Check className="w-3 h-3" aria-hidden="true" />}
                               </div>
                               <div className="flex-1">
                                 <p className="font-semibold text-sm text-slate-950">{opt.label}</p>
@@ -348,10 +363,12 @@ export function Act07SleepInsights() {
                       initial={{ opacity: 0, x: 20 }}
                       animate={{ opacity: 1, x: 0 }}
                       className="space-y-4"
+                      role="radiogroup"
+                      aria-labelledby="step-02-title"
                     >
                       <div className="space-y-1">
                         <span className="text-[10px] font-mono text-[#003B95] tracking-widest uppercase">step 02</span>
-                        <h4 className="text-xl font-serif text-slate-950 font-light">Choose your comfort preference</h4>
+                        <h4 id="step-02-title" className="text-xl font-serif text-slate-950 font-light">Choose your comfort preference</h4>
                       </div>
                       <div className="grid grid-cols-1 gap-3">
                         {COMFORT_OPTIONS.map((opt) => {
@@ -359,11 +376,13 @@ export function Act07SleepInsights() {
                           return (
                             <button
                               key={opt.id}
+                              role="radio"
+                              aria-checked={isSel}
                               onClick={() => {
                                 setComfort(opt.id);
                                 setTimeout(() => setCurrentStep(2), 400);
                               }}
-                              className={`text-left p-4 rounded-2xl border transition-all duration-300 focus:outline-none flex items-start gap-4 ${
+                              className={`text-left p-4 rounded-2xl border transition-all duration-300 focus:outline-none flex items-start gap-4 cursor-pointer ${
                                 isSel 
                                   ? 'bg-white border-[#003B95] ring-2 ring-[#003B95]/5 shadow-md shadow-slate-900/5 scale-[1.01]' 
                                   : 'bg-white/60 hover:bg-white border-slate-200/80 hover:border-slate-300 hover:shadow-sm'
@@ -372,7 +391,7 @@ export function Act07SleepInsights() {
                               <div className={`w-5 h-5 rounded-full border mt-0.5 flex items-center justify-center transition-all duration-300 ${
                                 isSel ? 'border-[#003B95] bg-[#003B95] text-white' : 'border-slate-300 bg-white'
                               }`}>
-                                {isSel && <Check className="w-3 h-3" />}
+                                {isSel && <Check className="w-3 h-3" aria-hidden="true" />}
                               </div>
                               <div className="flex-1">
                                 <p className="font-semibold text-sm text-slate-950">{opt.label}</p>
@@ -391,10 +410,12 @@ export function Act07SleepInsights() {
                       initial={{ opacity: 0, x: 20 }}
                       animate={{ opacity: 1, x: 0 }}
                       className="space-y-4"
+                      role="radiogroup"
+                      aria-labelledby="step-03-title"
                     >
                       <div className="space-y-1">
                         <span className="text-[10px] font-mono text-[#003B95] tracking-widest uppercase">step 03</span>
-                        <h4 className="text-xl font-serif text-slate-950 font-light">Choose your sleep environment</h4>
+                        <h4 id="step-03-title" className="text-xl font-serif text-slate-950 font-light">Choose your sleep environment</h4>
                       </div>
                       <div className="grid grid-cols-1 gap-3">
                         {ENVIRONMENT_OPTIONS.map((opt) => {
@@ -402,11 +423,13 @@ export function Act07SleepInsights() {
                           return (
                             <button
                               key={opt.id}
+                              role="radio"
+                              aria-checked={isSel}
                               onClick={() => {
                                 setEnvironment(opt.id);
                                 setTimeout(() => setCurrentStep(3), 400);
                               }}
-                              className={`text-left p-4 rounded-2xl border transition-all duration-300 focus:outline-none flex items-start gap-4 ${
+                              className={`text-left p-4 rounded-2xl border transition-all duration-300 focus:outline-none flex items-start gap-4 cursor-pointer ${
                                 isSel 
                                   ? 'bg-white border-[#003B95] ring-2 ring-[#003B95]/5 shadow-md shadow-slate-900/5 scale-[1.01]' 
                                   : 'bg-white/60 hover:bg-white border-slate-200/80 hover:border-slate-300 hover:shadow-sm'
@@ -415,7 +438,7 @@ export function Act07SleepInsights() {
                               <div className={`w-5 h-5 rounded-full border mt-0.5 flex items-center justify-center transition-all duration-300 ${
                                 isSel ? 'border-[#003B95] bg-[#003B95] text-white' : 'border-slate-300 bg-white'
                               }`}>
-                                {isSel && <Check className="w-3 h-3" />}
+                                {isSel && <Check className="w-3 h-3" aria-hidden="true" />}
                               </div>
                               <div className="flex-1">
                                 <p className="font-semibold text-sm text-slate-950">{opt.label}</p>
@@ -434,10 +457,12 @@ export function Act07SleepInsights() {
                       initial={{ opacity: 0, x: 20 }}
                       animate={{ opacity: 1, x: 0 }}
                       className="space-y-4"
+                      role="radiogroup"
+                      aria-labelledby="step-04-title"
                     >
                       <div className="space-y-1">
                         <span className="text-[10px] font-mono text-[#003B95] tracking-widest uppercase">step 04</span>
-                        <h4 className="text-xl font-serif text-slate-950 font-light">Choose your movement style</h4>
+                        <h4 id="step-04-title" className="text-xl font-serif text-slate-950 font-light">Choose your movement style</h4>
                       </div>
                       <div className="grid grid-cols-1 gap-3">
                         {MOVEMENT_OPTIONS.map((opt) => {
@@ -445,10 +470,12 @@ export function Act07SleepInsights() {
                           return (
                             <button
                               key={opt.id}
+                              role="radio"
+                              aria-checked={isSel}
                               onClick={() => {
                                 setMovement(opt.id);
                               }}
-                              className={`text-left p-4 rounded-2xl border transition-all duration-300 focus:outline-none flex items-start gap-4 ${
+                              className={`text-left p-4 rounded-2xl border transition-all duration-300 focus:outline-none flex items-start gap-4 cursor-pointer ${
                                 isSel 
                                   ? 'bg-white border-[#003B95] ring-2 ring-[#003B95]/5 shadow-md shadow-slate-900/5 scale-[1.01]' 
                                   : 'bg-white/60 hover:bg-white border-slate-200/80 hover:border-slate-300 hover:shadow-sm'
@@ -457,7 +484,7 @@ export function Act07SleepInsights() {
                               <div className={`w-5 h-5 rounded-full border mt-0.5 flex items-center justify-center transition-all duration-300 ${
                                 isSel ? 'border-[#003B95] bg-[#003B95] text-white' : 'border-slate-300 bg-white'
                               }`}>
-                                {isSel && <Check className="w-3 h-3" />}
+                                {isSel && <Check className="w-3 h-3" aria-hidden="true" />}
                               </div>
                               <div className="flex-1">
                                 <p className="font-semibold text-sm text-slate-950">{opt.label}</p>
@@ -508,7 +535,7 @@ export function Act07SleepInsights() {
             {/* SleepDNA Visual Asset Card */}
             <div className="relative w-full h-[450px] lg:h-[520px] rounded-[32px] overflow-hidden shadow-2xl border border-slate-200/80 bg-white/45 backdrop-blur-md flex items-center justify-center group">
               <img 
-                src="https://lh3.googleusercontent.com/d/10MJyg1cp5TkvallYg89DLB8MmGrwaX2L" 
+                src="https://lh3.googleusercontent.com/d/1rZkjPa1tAWNouWRe_vXoC-6dtY7m6bLN" 
                 alt="SleepDNA Customization Visualization" 
                 className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-1000 ease-out"
                 referrerPolicy="no-referrer"

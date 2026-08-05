@@ -1,6 +1,7 @@
 @import "tailwindcss";
 
 :root {
+  /* Spacing Tokens */
   --spacing-3xs: 0.25rem;  /* 4px */
   --spacing-2xs: 0.375rem; /* 6px */
   --spacing-xs: 0.5rem;    /* 8px */
@@ -12,21 +13,45 @@
   --spacing-3xl: 4rem;     /* 64px */
   --spacing-4xl: 6rem;     /* 96px */
 
-  --section-px: var(--spacing-md);
-  --section-py: var(--spacing-2xl);
+  /* Responsive Spacing System (Flagship Scales) */
+  --section-spacing-desktop: 140px;
+  --section-spacing-tablet: 96px;
+  --section-spacing-mobile: 64px;
+
+  --container-padding-desktop: 80px;
+  --container-padding-tablet: 40px;
+  --container-padding-mobile: 24px;
+
+  --section-px: var(--container-padding-mobile);
+  --section-py: var(--section-spacing-mobile);
+
+  /* Typographic Scale (Flagship) */
+  --font-size-headline-desktop: 64px;
+  --font-size-headline-laptop: 56px;
+  --font-size-headline-tablet: 44px;
+  --font-size-headline-mobile-lg: 36px;
+  --font-size-headline-mobile-sm: 30px;
+
+  --font-size-body-desktop: 18px;
+  --font-size-body-tablet: 17px;
+  --font-size-body-mobile: 16px;
+
+  --font-size-label-desktop: 14px;
+  --font-size-label-tablet: 13px;
+  --font-size-label-mobile: 12px;
 }
 
 @media (min-width: 768px) {
   :root {
-    --section-px: var(--spacing-xl);
-    --section-py: var(--spacing-3xl);
+    --section-px: var(--container-padding-tablet);
+    --section-py: var(--section-spacing-tablet);
   }
 }
 
 @media (min-width: 1024px) {
   :root {
-    --section-px: var(--spacing-2xl);
-    --section-py: var(--spacing-4xl);
+    --section-px: var(--container-padding-desktop);
+    --section-py: var(--section-spacing-desktop);
   }
 }
 
@@ -36,12 +61,84 @@
   }
   
   body {
-    @apply antialiased text-slate-900;
+    @apply antialiased text-slate-900 leading-relaxed;
     font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: var(--font-size-body-mobile);
   }
 
-  .font-serif-editorial {
+  @screen md {
+    body {
+      font-size: var(--font-size-body-tablet);
+    }
+  }
+
+  @screen lg {
+    body {
+      font-size: var(--font-size-body-desktop);
+    }
+  }
+
+  .font-serif, .font-serif-editorial {
     font-family: 'Playfair Display', serif;
+  }
+
+  /* Responsive Headings */
+  h1, .text-headline {
+    font-size: var(--font-size-headline-mobile-sm);
+    line-height: 1.1;
+    @apply font-serif font-light tracking-tight;
+  }
+
+  @screen sm {
+    h1, .text-headline {
+      font-size: var(--font-size-headline-mobile-lg);
+    }
+  }
+
+  @screen md {
+    h1, .text-headline {
+      font-size: var(--font-size-headline-tablet);
+    }
+  }
+
+  @screen lg {
+    h1, .text-headline {
+      font-size: var(--font-size-headline-laptop);
+    }
+  }
+
+  @screen xl {
+    h1, .text-headline {
+      font-size: var(--font-size-headline-desktop);
+    }
+  }
+
+  /* Premium Accessibility Focus Indicators */
+  :focus-visible {
+    @apply outline-none ring-2 ring-[#003B95] ring-offset-4;
+  }
+
+  /* Handle specific rounded components focus */
+  .rounded-full:focus-visible {
+    @apply rounded-full;
+  }
+  
+  .rounded-xl:focus-visible {
+    @apply rounded-xl;
+  }
+
+  .rounded-2xl:focus-visible {
+    @apply rounded-2xl;
+  }
+}
+
+/* Reduced Motion Support */
+@media (prefers-reduced-motion: reduce) {
+  *, ::before, ::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
   }
 }
 

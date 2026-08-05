@@ -1,10 +1,6 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import gsap from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { ExperiencePanel } from './ExperiencePanel';
-
-gsap.registerPlugin(ScrollTrigger);
 
 interface LayerHotspot {
   id: string;
@@ -71,7 +67,7 @@ interface Act03Props {
 }
 
 export function Act03SmartGrid({ onOpenTrialModal, progress = 0 }: Act03Props) {
-  const [activeHotspot, setActiveHotspot] = useState<LayerHotspot>(LAYER_HOTSPOTS[2]); // Default SmartGRID
+  const [activeHotspot, setActiveHotspot] = useState<LayerHotspot>(LAYER_HOTSPOTS[1]); // Default SmartGRID
   const [hoveredHotspot, setHoveredHotspot] = useState<LayerHotspot | null>(null);
 
   const isInteractiveState = progress >= 0.85;
@@ -80,46 +76,12 @@ export function Act03SmartGrid({ onOpenTrialModal, progress = 0 }: Act03Props) {
 
   const handleLayerClick = (index: number) => {
     setActiveHotspot(LAYER_HOTSPOTS[index]);
-    const triggers = ScrollTrigger.getAll();
-    const master = triggers.find(
-      (t) => 
-        (t.trigger as HTMLElement)?.id === 'cinematic-container' || 
-        (t.vars as any)?.id === 'cinematic-container'
-    ) || triggers[0];
-
-    if (master) {
-      const targetAct3Progs = [0.2, 0.4, 0.6, 0.8, 1.0];
-      const globalP = 0.65 + targetAct3Progs[index] * 0.35;
-      const targetScroll = master.start + globalP * (master.end - master.start);
-      
-      window.scrollTo({
-        top: targetScroll,
-        behavior: 'smooth'
-      });
-    }
-  };
-
-  const handleContinue = () => {
-    const triggers = ScrollTrigger.getAll();
-    const master = triggers.find(
-      (t) => 
-        (t.trigger as HTMLElement)?.id === 'cinematic-container' || 
-        (t.vars as any)?.id === 'cinematic-container'
-    ) || triggers[0];
-
-    if (master) {
-      const targetScroll = master.start + 1.0 * (master.end - master.start) + 200;
-      window.scrollTo({
-        top: targetScroll,
-        behavior: 'smooth'
-      });
-    }
   };
 
   return (
     <section 
       id="act-03"
-      className="relative w-full h-screen flex flex-col justify-between overflow-hidden bg-transparent"
+      className="relative w-full min-h-screen lg:h-screen flex flex-col justify-between overflow-y-auto lg:overflow-hidden bg-transparent py-12 lg:py-0"
       aria-label="Inside SensAI Discovery"
     >
       {/* Soft navy reflections in the background changing subtly based on interaction */}
@@ -133,44 +95,49 @@ export function Act03SmartGrid({ onOpenTrialModal, progress = 0 }: Act03Props) {
       />
 
       {/* Main Responsive Experience Grid */}
-      <div className="relative w-full h-full flex flex-col justify-between p-6 md:p-12 lg:px-20 lg:py-16 select-none z-10 pointer-events-none">
+      <div className="relative w-full h-full flex flex-col lg:grid lg:grid-cols-12 justify-between px-6 md:px-12 lg:px-20 lg:py-16 select-none z-10 pointer-events-none gap-8 lg:gap-12 items-center">
         
-        {/* TOP: Editorial content column */}
-        <div className="w-full lg:max-w-xl pointer-events-auto mt-2 md:mt-4">
-          <div className="flex items-center gap-3 mb-2">
+        {/* LEFT COLUMN: Editorial content & Layer Feature Navigator (Col 5 on Desktop) */}
+        <div className="w-full lg:col-span-5 pointer-events-auto flex flex-col justify-center mt-4 lg:mt-0">
+          <div className="flex items-center gap-3 mb-2 md:mb-3">
             <span 
-              className="text-[13px] font-mono uppercase tracking-[0.2em] text-[#003B95] font-semibold"
+              className="text-xs md:text-[13px] lg:text-[14px] font-mono uppercase tracking-[0.2em] text-[#003B95] font-semibold"
               id="inside-label"
             >
               INSIDE SENSAI
             </span>
             <span className="w-8 h-[1px] bg-[#003B95]/30" />
-            <span className="text-[11px] font-sans tracking-wide text-slate-400 uppercase">
-              Interactive product visualization
+            <span className="text-[11px] font-sans tracking-wide text-slate-400 uppercase hidden sm:inline">
+              Interactive Visualization
             </span>
           </div>
-          <h2 className="text-2xl md:text-[46px] md:leading-[1.1] font-semibold tracking-tight text-[#2E2E2E] font-serif">
+
+          <h2 className="text-headline">
             Every layer has a purpose.<br />
             Every night benefits from it.
           </h2>
-          <p className="text-xs md:text-[16px] text-slate-500 mt-3 leading-relaxed max-w-[500px]">
+
+          <p className="text-base md:text-lg lg:text-xl text-slate-600 mt-4 leading-relaxed max-w-[560px]">
             Premium comfort is created through thoughtful construction. Explore each layer to understand how carefully selected materials work together to deliver the SensAI experience.
           </p>
         </div>
 
-
-
-        {/* BOTTOM / EXTREME RIGHT: Experience Panel container + Editorial CTA */}
-        <div className="w-full flex flex-col lg:absolute lg:right-16 lg:bottom-16 lg:w-[420px] gap-4 pointer-events-auto z-30 mt-auto">
+        {/* RIGHT COLUMN / PANEL AREA (Col 7 on Desktop, Stacked on Tablet/Mobile) */}
+        <div 
+          className="w-full lg:col-span-7 flex flex-col justify-center items-center lg:items-end pointer-events-auto z-30 gap-6"
+          aria-live="polite"
+        >
+          
+          {/* Experience Panel Card */}
           <AnimatePresence mode="wait">
             {isInteractiveState && (
               <motion.div
                 key={displayedHotspot.id}
-                initial={{ opacity: 0, x: 20 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: 20 }}
+                initial={{ opacity: 0, y: 15 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -15 }}
                 transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
-                className="w-full"
+                className="w-full max-w-lg lg:w-[425px]"
               >
                 <ExperiencePanel
                   badge={displayedHotspot.badge}
@@ -178,32 +145,8 @@ export function Act03SmartGrid({ onOpenTrialModal, progress = 0 }: Act03Props) {
                   subtitle={displayedHotspot.subtitle}
                   description={displayedHotspot.description}
                   metrics={displayedHotspot.metrics}
-                  className="w-full shadow-2xl rounded-[24px] bg-white/94 backdrop-blur-[24px] border border-slate-100"
+                  className="w-full shadow-2xl rounded-[20px] lg:rounded-[24px] bg-white/95 backdrop-blur-[24px] border border-slate-200/80 p-5 md:p-6"
                 />
-              </motion.div>
-            )}
-          </AnimatePresence>
-
-          {/* Editorial CTA */}
-          <AnimatePresence>
-            {isInteractiveState && (
-              <motion.div 
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: 10 }}
-                transition={{ delay: 0.3, duration: 0.5 }}
-                className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 bg-white/90 backdrop-blur-md px-6 py-4 rounded-2xl border border-slate-200/60 shadow-lg w-full"
-              >
-                <div>
-                  <p className="text-[10px] font-mono uppercase tracking-widest text-slate-400 mb-0.5">NEXT CHAPTER</p>
-                  <h5 className="text-sm font-serif font-medium text-slate-900">Experience how it adapts to you.</h5>
-                </div>
-                <button
-                  onClick={handleContinue}
-                  className="px-6 py-2.5 rounded-xl bg-[#003B95] text-white text-xs font-sans font-medium tracking-wide hover:bg-[#002d73] transition-all duration-300 shadow-sm hover:shadow active:scale-95"
-                >
-                  Continue
-                </button>
               </motion.div>
             )}
           </AnimatePresence>
@@ -211,7 +154,7 @@ export function Act03SmartGrid({ onOpenTrialModal, progress = 0 }: Act03Props) {
 
       </div>
 
-      {/* Floating Hotspots layer (Fade in cleanly as soon as Frame 10 is reached) */}
+      {/* Floating Hotspots layer over background sequence (Hidden on small screens where touch list is used, visible on laptop/desktop) */}
       <AnimatePresence>
         {isInteractiveState && (
           <motion.div 
@@ -219,7 +162,7 @@ export function Act03SmartGrid({ onOpenTrialModal, progress = 0 }: Act03Props) {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.5 }}
-            className="absolute inset-0 z-20 pointer-events-none"
+            className="absolute inset-0 z-20 pointer-events-none hidden lg:block"
           >
             {LAYER_HOTSPOTS.map((layer, idx) => {
               const isHovered = hoveredHotspot?.id === layer.id;
@@ -234,7 +177,7 @@ export function Act03SmartGrid({ onOpenTrialModal, progress = 0 }: Act03Props) {
                   onClick={() => handleLayerClick(idx)}
                   onFocus={() => setHoveredHotspot(layer)}
                   onBlur={() => setHoveredHotspot(null)}
-                  className="absolute pointer-events-auto group focus:outline-none -translate-x-1/2 -translate-y-1/2 transition-all duration-300"
+                  className="absolute pointer-events-auto group focus:outline-none -translate-x-1/2 -translate-y-1/2 transition-all duration-300 min-w-[48px] min-h-[48px] flex items-center justify-center"
                   style={{ 
                     top: layer.top, 
                     left: layer.left,
@@ -272,8 +215,6 @@ export function Act03SmartGrid({ onOpenTrialModal, progress = 0 }: Act03Props) {
                     }`}>
                       <div className="w-1.5 h-1.5 rounded-full bg-white" />
                     </div>
-
-
                   </div>
                 </button>
               );
@@ -284,3 +225,4 @@ export function Act03SmartGrid({ onOpenTrialModal, progress = 0 }: Act03Props) {
     </section>
   );
 }
+

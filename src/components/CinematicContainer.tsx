@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { motion } from 'motion/react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { Act01Hero } from './Act01Hero';
@@ -91,7 +92,8 @@ export function CinematicContainer({ onOpenTrialModal, onActChange }: CinematicC
     if (!containerRef.current || !isPreloaded) return;
 
     // 1. Master Pinning ScrollTrigger
-    const pinDistance = window.innerHeight * 3;
+    // Reduced pin distance on smaller screens for more natural natural flow
+    const pinDistance = window.innerWidth < 768 ? window.innerHeight * 2 : window.innerHeight * 3;
 
     const masterTrigger = ScrollTrigger.create({
       trigger: containerRef.current,
@@ -234,9 +236,13 @@ export function CinematicContainer({ onOpenTrialModal, onActChange }: CinematicC
         const mappedGlobalProgress = targetIndex / (numFrames - 1);
 
         return (
-          <div className="absolute inset-0 z-0 pointer-events-none select-none bg-white">
+          <motion.div 
+            animate={p < 0.03 ? { scale: [1, 1.025, 1] } : { scale: 1 }}
+            transition={p < 0.03 ? { duration: 5, repeat: Infinity, ease: "easeInOut" } : { duration: 0.3 }}
+            className="absolute inset-0 z-0 pointer-events-none select-none bg-white origin-center"
+          >
             <WebGLSequenceViewer urls={COMBINED_FRAMES} progress={mappedGlobalProgress} />
-          </div>
+          </motion.div>
         );
       })()}
 

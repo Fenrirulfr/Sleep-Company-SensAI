@@ -121,28 +121,35 @@ export function Act06NightJourney() {
       <div className="relative z-10 section-container grid grid-cols-1 lg:grid-cols-12 gap-[var(--spacing-3xl)] items-center">
         
         {/* Left Column: Editorial & Selector (6 cols) */}
-        <div className="lg:col-span-6 space-y-[var(--spacing-xl)]">
+        <div className="lg:col-span-6 space-y-8 md:space-y-12">
           <div>
-            <p className="text-xs font-mono uppercase tracking-widest text-blue-400 mb-[var(--spacing-xs)] font-semibold">
+            <p className="text-label text-blue-400 mb-2 font-semibold">
               Your Night Journey
             </p>
-            <h2 className="text-4xl md:text-5xl lg:text-6xl font-light font-serif tracking-tight leading-tight">
+            <h2 className="text-headline">
               Circadian rhythm <br />
               <span className="italic text-blue-300">synchronization.</span>
             </h2>
-            <p className="text-slate-300 mt-[var(--spacing-md)] leading-relaxed text-sm md:text-base max-w-[560px]">
+            <p className="text-base md:text-lg lg:text-xl text-slate-300 mt-4 leading-relaxed max-w-[560px] font-light">
               SensAI actively modulates thermal and ergonomic support across all phases of your night.
             </p>
           </div>
 
           {/* Time Selector Controls */}
-          <div className="inline-flex gap-[var(--spacing-xs)] p-[var(--spacing-xs)] bg-white/10 backdrop-blur-2xl border border-white/20 rounded-full">
+          <div 
+            className="inline-flex gap-[var(--spacing-xs)] p-[var(--spacing-xs)] bg-white/10 backdrop-blur-2xl border border-white/20 rounded-full"
+            role="tablist"
+            aria-label="Time of day selection"
+          >
             {TIME_SETTINGS.map((setting) => {
               const Icon = setting.icon;
               const isActive = time === setting.id;
               return (
                 <button
                   key={setting.id}
+                  role="tab"
+                  aria-selected={isActive}
+                  aria-controls={`experience-panel-${setting.id}`}
                   onClick={() => setTime(setting.id)}
                   className={`relative px-[var(--spacing-lg)] py-[var(--spacing-sm)] rounded-full text-xs font-mono uppercase tracking-widest flex items-center gap-[var(--spacing-xs)] transition-all duration-500 cursor-pointer ${
                     isActive ? 'text-slate-900 font-semibold' : 'text-white/80 hover:text-white'
@@ -156,7 +163,7 @@ export function Act06NightJourney() {
                     />
                   )}
                   <span className="relative z-10 flex items-center gap-2">
-                    <Icon className="w-4 h-4" />
+                    <Icon className="w-4 h-4" aria-hidden="true" />
                     <span>{setting.label}</span>
                   </span>
                 </button>
@@ -166,7 +173,12 @@ export function Act06NightJourney() {
         </div>
 
         {/* Right Column: Experience Panel (6 cols) */}
-        <div className="lg:col-span-6 flex justify-end">
+        <div 
+          className="lg:col-span-6 flex justify-end"
+          role="tabpanel"
+          id={`experience-panel-${time}`}
+          aria-live="polite"
+        >
           <div className="w-full max-w-md">
             <ExperiencePanel
               dark={true}

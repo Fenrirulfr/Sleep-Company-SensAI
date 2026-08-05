@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Calendar, Menu, X, CheckCircle2, Film } from 'lucide-react';
 import { ActId, ActConfig, SoundscapeTrack } from '../types';
@@ -24,17 +24,43 @@ export const NavigationHeader: React.FC<NavigationHeaderProps> = ({
   hasDnaProfile,
 }) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [isVisible, setIsVisible] = useState(true);
+  const [lastScrollY, setLastScrollY] = useState(0);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY;
+      if (currentScrollY > lastScrollY && currentScrollY > 100) {
+        setIsVisible(false);
+      } else {
+        setIsVisible(true);
+      }
+      setLastScrollY(currentScrollY);
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [lastScrollY]);
 
   const activeActIndex = acts.findIndex((a) => a.id === currentActId);
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 px-4 py-4 md:px-8 pointer-events-none transition-all duration-700">
-      <div className="max-w-7xl mx-auto flex items-center justify-between pointer-events-auto">
+    <header 
+      className={`fixed top-0 left-0 right-0 z-50 px-4 py-4 md:px-8 pointer-events-none transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] ${
+        isVisible ? 'translate-y-0 opacity-100' : '-translate-y-full opacity-0'
+      }`}
+      role="banner"
+    >
+      <nav 
+        className="max-w-7xl mx-auto flex items-center justify-between pointer-events-auto"
+        aria-label="Main Navigation"
+      >
         
         {/* 1. Brand Logo Badge */}
         <button
           onClick={() => onSelectAct('arrival')}
           className="flex items-center gap-2.5 group text-left brand-pill px-4 py-2.5 rounded-full shadow-md hover:border-[#003B95]/40 transition duration-500"
+          aria-label="SensAI Homepage"
         >
           <img 
             src="https://thesleepcompany.in/cdn/shop/files/new_logo.webp?v=1706780127&width=600" 
@@ -50,7 +76,10 @@ export const NavigationHeader: React.FC<NavigationHeaderProps> = ({
         {/* Right Audio & Trial Controls */}
         <div className="flex items-center gap-2">
           {/* Soundscape Audio Engine */}
-          <div className="brand-pill rounded-full px-1.5 py-1 shadow-md">
+          <div 
+            className="brand-pill rounded-full px-1.5 py-1 shadow-md"
+            aria-label="Soundscape Controls"
+          >
             <SoundscapeAudio
               currentTrack={soundTrack}
               onTrackChange={onSoundTrackChange}
@@ -61,8 +90,9 @@ export const NavigationHeader: React.FC<NavigationHeaderProps> = ({
             <button
               onClick={() => onSelectAct('modern-homes')}
               className="hidden sm:flex items-center gap-1.5 text-xs bg-blue-50 border border-blue-200 text-[#003B95] px-3.5 py-1.5 rounded-full hover:bg-blue-100/80 transition shadow-sm font-semibold"
+              aria-label="Sleep DNA Profile is active"
             >
-              <CheckCircle2 className="w-3.5 h-3.5 text-[#003B95]" />
+              <CheckCircle2 className="w-3.5 h-3.5 text-[#003B95]" aria-hidden="true" />
               <span className="font-mono text-[11px]">SLEEP DNA ACTIVE</span>
             </button>
           )}
@@ -71,7 +101,7 @@ export const NavigationHeader: React.FC<NavigationHeaderProps> = ({
             onClick={onOpenTrialModal}
             className="hidden md:flex items-center gap-2 px-5 py-2 text-xs font-semibold rounded-full bg-[#003B95] text-white hover:bg-[#002f77] transition shadow-md duration-300"
           >
-            <Calendar className="w-3.5 h-3.5 text-sky-200" />
+            <Calendar className="w-3.5 h-3.5 text-sky-200" aria-hidden="true" />
             <span>100-Night Trial</span>
           </button>
 
@@ -79,16 +109,20 @@ export const NavigationHeader: React.FC<NavigationHeaderProps> = ({
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             className="lg:hidden p-2 rounded-full brand-pill text-slate-800 shadow-md"
+            aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}
+            aria-expanded={mobileMenuOpen}
+            aria-controls="mobile-navigation-menu"
           >
             {mobileMenuOpen ? <X className="w-5 h-5 text-[#003B95]" /> : <Menu className="w-5 h-5 text-slate-800" />}
           </button>
         </div>
-      </div>
+      </nav>
 
       {/* Mobile Menu Overlay */}
       <AnimatePresence>
         {mobileMenuOpen && (
           <motion.div
+            id="mobile-navigation-menu"
             initial={{ opacity: 0, y: -15 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -15 }}

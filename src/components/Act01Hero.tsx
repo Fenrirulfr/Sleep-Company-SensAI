@@ -82,17 +82,17 @@ export function Act01Hero({ progress = 0 }: { progress?: number }) {
 
         {/* Interactive Layer */}
         <div 
-          className="absolute inset-0 z-10 flex flex-col justify-start pt-[var(--spacing-4xl)] sm:pt-[var(--spacing-4xl)] section-padding-x pointer-events-none select-none"
+          className="absolute inset-0 z-10 flex flex-col justify-start pt-[var(--spacing-4xl)] section-padding-x pointer-events-none select-none"
           style={{ transform: prefersReducedMotion ? 'none' : `translate(${mousePos.x * 0.4}px, ${mousePos.y * 0.4}px)` }}
         >
           <motion.div 
             style={{ opacity: boxOpacity }}
-            className="flex flex-col items-start justify-start max-w-2xl gap-[var(--spacing-lg)] sm:gap-[var(--spacing-xl)] mt-[var(--spacing-md)] sm:mt-[var(--spacing-sm)] p-[var(--spacing-lg)] sm:p-[var(--spacing-xl)] md:p-[var(--spacing-2xl)] rounded-3xl bg-white/80 backdrop-blur-2xl border border-white shadow-[0_32px_64px_rgba(0,0,0,0.12)]"
+            className="flex flex-col items-start justify-start w-full max-w-2xl gap-[var(--spacing-lg)] md:gap-[var(--spacing-xl)] mt-[var(--spacing-xl)] p-6 sm:p-10 md:p-12 lg:p-14 rounded-[20px] md:rounded-[32px] bg-white/80 backdrop-blur-2xl border border-white shadow-[0_32px_64px_rgba(0,0,0,0.12)]"
           >
-            {/* Framed Badge just before Tomorrow Begins Tonight */}
+            {/* Framed Badge */}
             <motion.div
               style={{ opacity: headlineOpacity }}
-              className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-slate-900/[0.04] border border-slate-900/10 backdrop-blur-md text-[11px] font-mono uppercase tracking-[0.2em] text-slate-700 shadow-sm"
+              className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-slate-900/[0.04] border border-slate-900/10 backdrop-blur-md text-[10px] md:text-[12px] font-mono uppercase tracking-[0.2em] text-slate-700 shadow-sm"
             >
               <Sparkles className="w-3.5 h-3.5 text-[#003B95]" />
               <span>The Sleep Company • SensAI™</span>
@@ -107,7 +107,7 @@ export function Act01Hero({ progress = 0 }: { progress?: number }) {
               className="w-full flex justify-start"
             >
               <div className="text-left">
-                <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-light font-serif tracking-tight text-slate-900 leading-tight">
+                <h1 id="hero-title" className="text-headline">
                   Tomorrow Begins <span className="italic text-slate-500 font-normal">Tonight.</span>
                 </h1>
               </div>
@@ -121,10 +121,10 @@ export function Act01Hero({ progress = 0 }: { progress?: number }) {
               }}
               className="w-full flex justify-start"
             >
-              <div className="max-w-lg text-left drop-shadow-[0_4px_24px_rgba(255,255,255,0.4)]">
-                <h2 className="text-lg sm:text-xl font-light text-slate-700 leading-relaxed">
+              <div className="max-w-[560px] text-left drop-shadow-[0_4px_24px_rgba(255,255,255,0.4)]">
+                <p className="text-base sm:text-lg lg:text-xl font-light text-slate-700 leading-relaxed">
                   Meet <span className="text-[#003B95] font-normal italic">SensAI</span> — the adaptive sleep experience designed for premium comfort and restorative recovery.
-                </h2>
+                </p>
               </div>
             </motion.div>
 
@@ -134,14 +134,14 @@ export function Act01Hero({ progress = 0 }: { progress?: number }) {
                 opacity: ctaOpacity,
                 pointerEvents: ctaOpacity > 0.5 ? 'auto' : 'none'
               }}
-              className="flex justify-start"
+              className="flex justify-start w-full sm:w-auto"
             >
               <button
                 aria-label="Start the SensAI Experience"
                 onClick={() => {
                   scrollToAct('act-02');
                 }}
-                className="px-8 py-3.5 rounded-full border border-slate-200 bg-white/80 backdrop-blur-md text-slate-900 hover:bg-white hover:border-[#003B95]/30 hover:-translate-y-0.5 focus:outline-none focus:ring-2 focus:ring-[#003B95] focus:ring-offset-2 transition-all duration-300 shadow-[0_8px_32px_rgba(0,0,0,0.05)] hover:shadow-[0_12px_40px_rgba(0,0,0,0.1)] text-sm font-semibold flex items-center gap-2.5 cursor-pointer pointer-events-auto"
+                className="w-full sm:w-auto min-h-[48px] px-8 py-3.5 rounded-full border border-slate-200 bg-white/80 backdrop-blur-md text-slate-900 hover:bg-white hover:border-[#003B95]/30 hover:-translate-y-0.5 focus:outline-none focus:ring-2 focus:ring-[#003B95] focus:ring-offset-2 transition-all duration-300 shadow-[0_8px_32px_rgba(0,0,0,0.05)] hover:shadow-[0_12px_40px_rgba(0,0,0,0.1)] text-sm font-semibold flex items-center justify-center gap-2.5 cursor-pointer pointer-events-auto"
               >
                 <Sparkles className="w-4 h-4 text-[#003B95]" aria-hidden="true" />
                 <span>Experience SensAI</span>

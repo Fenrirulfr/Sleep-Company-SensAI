@@ -163,7 +163,7 @@ export default function App() {
       />
 
       {/* Main Experience Flow */}
-      <main>
+      <main id="main-content" role="main">
         <TransitionManager />
         <CinematicContainer 
           onOpenTrialModal={() => setIsTrialModalOpen(true)} 

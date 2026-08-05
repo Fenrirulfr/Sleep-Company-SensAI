@@ -191,7 +191,7 @@ export function Act02MeetSensAI({ progress: customProgress }: { progress?: numbe
               initial={{ opacity: 0, y: 15 }}
               animate={{ opacity: progress > 0.06 ? 1 : 0, y: progress > 0.06 ? 0 : 15 }}
               transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-              className="text-[32px] sm:text-[40px] lg:text-[56px] font-semibold font-serif tracking-tight text-slate-900 leading-[1.05]"
+              className="text-headline"
             >
               Luxury begins long before <span className="italic text-[#003B95] font-normal">you lie down.</span>
             </motion.h2>
@@ -207,7 +207,10 @@ export function Act02MeetSensAI({ progress: customProgress }: { progress?: numbe
           </div>
 
           {/* Floating Glass Experience Panel - beautifully aligned underneath */}
-          <div className="w-full max-w-[420px] transition-all duration-300">
+          <div 
+            className="w-full max-w-[420px] transition-all duration-300"
+            aria-live="polite"
+          >
             <AnimatePresence mode="wait">
               {progress > 0.08 && (
                 <motion.div
