@@ -179,7 +179,10 @@ export function Act02MeetSensAI({ progress: customProgress }: { progress?: numbe
               className="flex items-center gap-2"
             >
               <span className="w-1.5 h-1.5 rounded-full bg-[#003B95]" />
-              <p className="text-[14px] font-mono uppercase tracking-[0.2em] text-[#003B95] font-semibold leading-none">
+              <p 
+                className="text-[14px] font-mono uppercase tracking-[0.2em] text-white font-semibold leading-none"
+                style={{ color: '#ffffff' }}
+              >
                 CRAFTSMANSHIP
               </p>
             </motion.div>

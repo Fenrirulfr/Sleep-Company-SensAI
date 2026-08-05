@@ -505,8 +505,30 @@ export function Act07SleepInsights() {
           {/* Right Column: Premium Interactive 3D Mattress & Silhouette Visualization (Col Span 7) */}
           <div className="lg:col-span-7 flex flex-col items-center justify-center relative min-h-[480px] lg:min-h-[580px] w-full">
             
+            {/* SleepDNA Visual Asset Card */}
+            <div className="relative w-full h-[450px] lg:h-[520px] rounded-[32px] overflow-hidden shadow-2xl border border-slate-200/80 bg-white/45 backdrop-blur-md flex items-center justify-center group">
+              <img 
+                src="https://lh3.googleusercontent.com/d/10MJyg1cp5TkvallYg89DLB8MmGrwaX2L" 
+                alt="SleepDNA Customization Visualization" 
+                className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-1000 ease-out"
+                referrerPolicy="no-referrer"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-slate-950/60 via-slate-950/10 to-transparent" />
+              
+              {/* Floating Dynamic Overlay Badge */}
+              <div className="absolute bottom-6 left-6 right-6 p-6 rounded-2xl bg-white/90 backdrop-blur-md border border-white/40 shadow-xl flex items-center justify-between">
+                <div>
+                  <span className="text-[10px] font-mono tracking-widest text-[#003B95] uppercase font-bold">Active Profile</span>
+                  <h4 className="text-base font-serif font-medium text-slate-900 mt-0.5">{feedback.title}</h4>
+                </div>
+                <div className="px-3.5 py-1.5 rounded-full bg-[#003B95]/10 text-[#003B95] text-xs font-mono font-medium tracking-wider">
+                  {feedback.badge}
+                </div>
+              </div>
+            </div>
+
             {/* Configurator Reset and Quick info indicators */}
-            <div className="absolute bottom-0 text-center w-full max-w-md pointer-events-auto">
+            <div className="absolute -bottom-10 text-center w-full max-w-md pointer-events-auto">
               <p className="text-[10px] font-mono uppercase tracking-[0.15em] text-slate-400">
                 {!position ? "Select sleeping position to begin setup" : 
                  !comfort ? "Choose comfort level to align spine" : 
@@ -517,7 +539,7 @@ export function Act07SleepInsights() {
               {position && (
                 <button
                   onClick={handleReset}
-                  className="mt-4 inline-flex items-center gap-1.5 text-[10px] font-mono uppercase tracking-widest text-slate-500 hover:text-[#003B95] border-b border-dashed border-slate-300 hover:border-[#003B95] pb-0.5 transition-all"
+                  className="mt-3 inline-flex items-center gap-1.5 text-[10px] font-mono uppercase tracking-widest text-slate-500 hover:text-[#003B95] border-b border-dashed border-slate-300 hover:border-[#003B95] pb-0.5 transition-all"
                 >
                   <RotateCcw className="w-3 h-3" /> Reset Selections
                 </button>

@@ -4,7 +4,6 @@ import { SoundscapeTrack, ActId } from './types';
 import { NavigationHeader } from './components/NavigationHeader';
 import { CursorGlow } from './components/CursorGlow';
 import { CinematicContainer } from './components/CinematicContainer';
-import { Act05Layers } from './components/Act05Layers';
 import { Act06NightJourney } from './components/Act06NightJourney';
 import { Act07SleepInsights } from './components/Act07SleepInsights';
 import { Act08ModernHomes } from './components/Act08ModernHomes';
@@ -25,13 +24,41 @@ export default function App() {
 
   // Scroll lock while preloading assets
   useEffect(() => {
+    const preventDefault = (e: Event) => {
+      e.preventDefault();
+    };
+
+    const preventScrollKeys = (e: KeyboardEvent) => {
+      const keys = ['ArrowUp', 'ArrowDown', 'Space', ' ', 'PageUp', 'PageDown', 'End', 'Home'];
+      if (keys.includes(e.key)) {
+        e.preventDefault();
+      }
+    };
+
     if (isPreloading) {
       document.body.style.overflow = 'hidden';
+      document.documentElement.style.overflow = 'hidden';
+      document.body.style.height = '100vh';
+      document.documentElement.style.height = '100vh';
+
+      window.addEventListener('wheel', preventDefault, { passive: false });
+      window.addEventListener('touchmove', preventDefault, { passive: false });
+      window.addEventListener('keydown', preventScrollKeys, { passive: false });
     } else {
       document.body.style.overflow = '';
+      document.documentElement.style.overflow = '';
+      document.body.style.height = '';
+      document.documentElement.style.height = '';
     }
+
     return () => {
       document.body.style.overflow = '';
+      document.documentElement.style.overflow = '';
+      document.body.style.height = '';
+      document.documentElement.style.height = '';
+      window.removeEventListener('wheel', preventDefault);
+      window.removeEventListener('touchmove', preventDefault);
+      window.removeEventListener('keydown', preventScrollKeys);
     };
   }, [isPreloading]);
 
@@ -41,7 +68,6 @@ export default function App() {
       { id: 'arrival', domId: 'act-01' },
       { id: 'sensai', domId: 'act-02' },
       { id: 'smartgrid', domId: 'act-03' },
-      { id: 'layers', domId: 'act-05' },
       { id: 'night-journey', domId: 'act-06' },
       { id: 'sleep-insights', domId: 'act-07' },
       { id: 'modern-homes', domId: 'act-08' },
@@ -65,10 +91,8 @@ export default function App() {
               setConciergeState('explore-layers');
             } else if (matchedAct.id === 'smartgrid') {
               setConciergeState('try-side-sleeper');
-            } else if (matchedAct.id === 'layers') {
-              setConciergeState('change-lighting');
             } else if (matchedAct.id === 'night-journey') {
-              setConciergeState('view-recovery');
+              setConciergeState('change-lighting');
             } else if (matchedAct.id === 'sleep-insights') {
               setConciergeState('compare-comfort');
             } else if (matchedAct.id === 'modern-homes' || matchedAct.id === 'experience') {
@@ -96,7 +120,7 @@ export default function App() {
       arrival: 'act-01',
       sensai: 'act-02',
       smartgrid: 'act-03',
-      layers: 'act-05',
+      layers: 'act-03',
       'night-journey': 'act-06',
       'sleep-insights': 'act-07',
       'modern-homes': 'act-08',
@@ -124,12 +148,11 @@ export default function App() {
         acts={[
           { id: 'arrival', actNumber: '01', title: 'Arrival', subtitle: 'Tomorrow Begins Tonight', navLabel: '01 Arrival' },
           { id: 'sensai', actNumber: '02', title: 'SensAI', subtitle: 'Adaptive Intelligence', navLabel: '02 SensAI' },
-          { id: 'smartgrid', actNumber: '03', title: 'SmartGRID', subtitle: 'Inside the Core', navLabel: '03 SmartGRID' },
-          { id: 'layers', actNumber: '04', title: 'Layers', subtitle: 'Experience Every Layer', navLabel: '04 Layers' },
-          { id: 'night-journey', actNumber: '05', title: 'Night Journey', subtitle: 'Your Night Journey', navLabel: '05 Night Journey' },
-          { id: 'sleep-insights', actNumber: '06', title: 'SleepDNA', subtitle: 'Your SleepDNA Profile', navLabel: '06 SleepDNA' },
-          { id: 'modern-homes', actNumber: '07', title: 'Modern Homes', subtitle: 'Designed For Modern Homes', navLabel: '07 Modern Homes' },
-          { id: 'experience', actNumber: '08', title: 'Experience', subtitle: 'Experience SensAI', navLabel: '08 Experience' }
+          { id: 'smartgrid', actNumber: '03', title: 'SmartGRID', subtitle: 'Anatomy & Core', navLabel: '03 SmartGRID' },
+          { id: 'night-journey', actNumber: '04', title: 'Night Journey', subtitle: 'Your Night Journey', navLabel: '04 Night Journey' },
+          { id: 'sleep-insights', actNumber: '05', title: 'SleepDNA', subtitle: 'Your SleepDNA Profile', navLabel: '05 SleepDNA' },
+          { id: 'modern-homes', actNumber: '06', title: 'Modern Homes', subtitle: 'Designed For Modern Homes', navLabel: '06 Modern Homes' },
+          { id: 'experience', actNumber: '07', title: 'Experience', subtitle: 'Experience SensAI', navLabel: '07 Experience' }
         ]}
         currentActId={currentActId}
         onSelectAct={handleSelectAct}
@@ -146,7 +169,6 @@ export default function App() {
           onOpenTrialModal={() => setIsTrialModalOpen(true)} 
           onActChange={(id) => setCurrentActId(id)}
         />
-        <Act05Layers />
         <Act06NightJourney />
         <Act07SleepInsights />
         <Act08ModernHomes />
@@ -161,10 +183,8 @@ export default function App() {
           } else if (conciergeState === 'explore-layers') {
             handleSelectAct('smartgrid');
           } else if (conciergeState === 'try-side-sleeper') {
-            handleSelectAct('layers');
-          } else if (conciergeState === 'change-lighting') {
             handleSelectAct('night-journey');
-          } else if (conciergeState === 'view-recovery') {
+          } else if (conciergeState === 'change-lighting') {
             handleSelectAct('sleep-insights');
           } else if (conciergeState === 'compare-comfort') {
             handleSelectAct('modern-homes');
@@ -172,7 +192,7 @@ export default function App() {
             const nextActMap: Record<ActId, ActId> = {
               'arrival': 'sensai',
               'sensai': 'smartgrid',
-              'smartgrid': 'layers',
+              'smartgrid': 'night-journey',
               'layers': 'night-journey',
               'night-journey': 'sleep-insights',
               'sleep-insights': 'modern-homes',

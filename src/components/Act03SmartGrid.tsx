@@ -1,28 +1,10 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { ExperiencePanel } from './ExperiencePanel';
 
 gsap.registerPlugin(ScrollTrigger);
-
-const SMARTGRID_SEQUENCE = [
-  'https://lh3.googleusercontent.com/d/1oP5EDEv2VePxUZyOMwZsA1dLbq1obW87',
-  'https://lh3.googleusercontent.com/d/10n3lKo87QXnwCePuEhXuY0FdXGkr1JYx',
-  'https://lh3.googleusercontent.com/d/12e-mZGV6SMhGWR2nINlM4BtEigEzPWni',
-  'https://lh3.googleusercontent.com/d/15a-AzWvAhf7VJWwqhdXQbope_JJt6GSc',
-  'https://lh3.googleusercontent.com/d/1AGcZUVw5Dj33rHlsRSojjSC46tEQdUaz',
-  'https://lh3.googleusercontent.com/d/1DI6z336en7R8w0vQMJAtKDiU3hFAtj7j',
-  'https://lh3.googleusercontent.com/d/1NSB2BgMrjAVKTQszK4Qny3fmG2GpdChq',
-  'https://lh3.googleusercontent.com/d/1WjKB8nmySFXBpM5fd5_rcbacN9UpGHJp',
-  'https://lh3.googleusercontent.com/d/1ZL6ac4rDkcrj3rqrvCsDRvY0kFRFQ4bb',
-  'https://lh3.googleusercontent.com/d/1ZffCCpdbzBBc547kBB--qeVyX3hl0dmj',
-  'https://lh3.googleusercontent.com/d/1ak1glfepV5WT2yAGl0Y1QHzZhIJf-xw5',
-  'https://lh3.googleusercontent.com/d/1c4tKWrnA9u7gWvKQife1u3j1R1gaa8ep',
-  'https://lh3.googleusercontent.com/d/1liiySSBLEuMs9hkItOsFEdy2arLqeY7K',
-  'https://lh3.googleusercontent.com/d/1o8AgIdeBxfB8sPr0ghV3SE0YF_Bc6gHD',
-  'https://lh3.googleusercontent.com/d/1ulnUUHtHEywlWqAereRIO7tEezBROcVx'
-];
 
 interface LayerHotspot {
   id: string;
@@ -32,48 +14,54 @@ interface LayerHotspot {
   description: string;
   top: string;
   left: string;
-  metrics: Array<{ label: string; value: string | number; unit?: string }>;
+  metrics?: Array<{ label: string; value: string | number; unit?: string }>;
 }
 
 const LAYER_HOTSPOTS: LayerHotspot[] = [
   {
-    id: 'comfort',
+    id: 'layer-2',
     badge: 'LAYER 01',
-    title: 'Plush Comfort Layer',
-    subtitle: 'TACTILE SOFTNESS',
-    description: 'High-resilience memory blend cushioning initial impact without sinking.',
-    top: '38%',
-    left: '42%',
-    metrics: [
-      { label: 'Density', value: 'Plush' },
-      { label: 'Pressure Relief', value: 'High' }
-    ]
+    title: 'Comfort Layer',
+    subtitle: 'COMFORT LAYER',
+    description: 'Provides an inviting cushioning surface that works in harmony with the layers below for a balanced sleep experience.',
+    top: '22%',
+    left: '72%',
   },
   {
-    id: 'smartgrid',
+    id: 'layer-3',
     badge: 'LAYER 02',
-    title: 'SmartGRID® Core',
-    subtitle: 'PATENTED MATRIX',
-    description: '2,500+ hyper-elastic polymer air cells dynamically contour to spinal geometry.',
-    top: '50%',
-    left: '52%',
-    metrics: [
-      { label: 'Airflow Channels', value: '2,500+' },
-      { label: 'Flex Rate', value: 'Instant' }
-    ]
+    title: 'SmartGRID®',
+    subtitle: 'SMARTGRID® CORE',
+    description: 'The signature SmartGRID® layer adapts to changing pressure, helping deliver responsive comfort while maintaining support where it is needed.',
+    top: '37%',
+    left: '72%',
   },
   {
-    id: 'support',
+    id: 'layer-4',
     badge: 'LAYER 03',
-    title: 'Support Base',
-    subtitle: 'STRUCTURAL FOUNDATION',
-    description: 'Ultra-durable ergonomic base ensuring zero sag and zero motion transfer.',
-    top: '62%',
-    left: '60%',
-    metrics: [
-      { label: 'Durability', value: '10+', unit: 'years' },
-      { label: 'Motion Transfer', value: '0%' }
-    ]
+    title: 'Transition Layer',
+    subtitle: 'TRANSITION LAYER',
+    description: 'Helps each layer work together smoothly, creating a consistent and balanced feel across the mattress.',
+    top: '52%',
+    left: '72%',
+  },
+  {
+    id: 'layer-5',
+    badge: 'LAYER 04',
+    title: 'Support Core',
+    subtitle: 'SUPPORT CORE',
+    description: 'A stable support structure that contributes to alignment and complements the adaptive comfort layers above.',
+    top: '67%',
+    left: '72%',
+  },
+  {
+    id: 'layer-6',
+    badge: 'LAYER 05',
+    title: 'Foundation Base',
+    subtitle: 'FOUNDATION BASE',
+    description: 'Forms the durable foundation of the mattress, supporting the overall construction and long-term performance.',
+    top: '82%',
+    left: '72%',
   }
 ];
 
@@ -82,56 +70,17 @@ interface Act03Props {
   progress?: number;
 }
 
-export function Act03SmartGrid({ onOpenTrialModal, progress: customProgress }: Act03Props) {
-  const sectionRef = useRef<HTMLDivElement>(null);
-  const [internalProgress, setInternalProgress] = useState(0);
-  const [activeHotspot, setActiveHotspot] = useState<LayerHotspot>(LAYER_HOTSPOTS[1]);
+export function Act03SmartGrid({ onOpenTrialModal, progress = 0 }: Act03Props) {
+  const [activeHotspot, setActiveHotspot] = useState<LayerHotspot>(LAYER_HOTSPOTS[2]); // Default SmartGRID
+  const [hoveredHotspot, setHoveredHotspot] = useState<LayerHotspot | null>(null);
 
-  const progress = customProgress !== undefined ? customProgress : internalProgress;
-
-  useEffect(() => {
-    if (progress < 0.35) {
-      setActiveHotspot(LAYER_HOTSPOTS[0]);
-    } else if (progress < 0.7) {
-      setActiveHotspot(LAYER_HOTSPOTS[1]);
-    } else {
-      setActiveHotspot(LAYER_HOTSPOTS[2]);
-    }
-  }, [progress]);
-
-  useEffect(() => {
-    if (customProgress !== undefined) return;
-    if (!sectionRef.current) return;
-
-    let tl: gsap.core.Timeline | null = null;
-    const timer = setTimeout(() => {
-      tl = gsap.timeline({
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: 'top top',
-          end: '+=200%',
-          pin: true,
-          scrub: true,
-          anticipatePin: 1,
-          refreshPriority: 5,
-          onUpdate: (self) => {
-            setInternalProgress(self.progress);
-          }
-        }
-      });
-      ScrollTrigger.sort();
-      ScrollTrigger.refresh();
-    }, 60);
-
-    return () => {
-      clearTimeout(timer);
-      if (tl) tl.kill();
-    };
-  }, [customProgress]);
+  const isInteractiveState = progress >= 0.85;
+  const isAnyHovered = hoveredHotspot !== null;
+  const displayedHotspot = hoveredHotspot || activeHotspot;
 
   const handleLayerClick = (index: number) => {
+    setActiveHotspot(LAYER_HOTSPOTS[index]);
     const triggers = ScrollTrigger.getAll();
-    // Try to find the master container ScrollTrigger by id or trigger reference
     const master = triggers.find(
       (t) => 
         (t.trigger as HTMLElement)?.id === 'cinematic-container' || 
@@ -139,9 +88,7 @@ export function Act03SmartGrid({ onOpenTrialModal, progress: customProgress }: A
     ) || triggers[0];
 
     if (master) {
-      // Act 3 occupies progress from 0.65 to 1.0.
-      // We map index 0, 1, 2 into points within this 0.65-1.0 progress block.
-      const targetAct3Progs = [0.15, 0.50, 0.85];
+      const targetAct3Progs = [0.2, 0.4, 0.6, 0.8, 1.0];
       const globalP = 0.65 + targetAct3Progs[index] * 0.35;
       const targetScroll = master.start + globalP * (master.end - master.start);
       
@@ -152,139 +99,188 @@ export function Act03SmartGrid({ onOpenTrialModal, progress: customProgress }: A
     }
   };
 
+  const handleContinue = () => {
+    const triggers = ScrollTrigger.getAll();
+    const master = triggers.find(
+      (t) => 
+        (t.trigger as HTMLElement)?.id === 'cinematic-container' || 
+        (t.vars as any)?.id === 'cinematic-container'
+    ) || triggers[0];
+
+    if (master) {
+      const targetScroll = master.start + 1.0 * (master.end - master.start) + 200;
+      window.scrollTo({
+        top: targetScroll,
+        behavior: 'smooth'
+      });
+    }
+  };
+
   return (
     <section 
       id="act-03"
-      ref={sectionRef}
-      className="relative w-full h-screen flex items-center overflow-hidden bg-transparent"
-      aria-label="Inside SmartGRID Discovery"
+      className="relative w-full h-screen flex flex-col justify-between overflow-hidden bg-transparent"
+      aria-label="Inside SensAI Discovery"
     >
-      {/* Interactive pulsing visual hotspots layered over the 3D visual mattress */}
-      <div className="absolute inset-0 z-20 pointer-events-none">
-        {LAYER_HOTSPOTS.map((layer, idx) => {
-          const isActive = activeHotspot.id === layer.id;
-          return (
-            <button
-              key={`hotspot-${layer.id}`}
-              onClick={() => handleLayerClick(idx)}
-              className="absolute pointer-events-auto group focus:outline-none -translate-x-1/2 -translate-y-1/2 transition-all duration-500"
-              style={{ top: layer.top, left: layer.left }}
-              title={`View ${layer.title}`}
+      {/* Soft navy reflections in the background changing subtly based on interaction */}
+      <div 
+        className="absolute inset-0 pointer-events-none transition-all duration-500 ease-out z-0"
+        style={{
+          background: isAnyHovered 
+            ? 'radial-gradient(circle at 50% 50%, rgba(0, 59, 149, 0.08) 0%, rgba(255,255,255,0) 70%)'
+            : 'radial-gradient(circle at 50% 50%, rgba(0, 59, 149, 0.04) 0%, rgba(255,255,255,0) 70%)',
+        }}
+      />
+
+      {/* Main Responsive Experience Grid */}
+      <div className="relative w-full h-full flex flex-col justify-between p-6 md:p-12 lg:px-20 lg:py-16 select-none z-10 pointer-events-none">
+        
+        {/* TOP: Editorial content column */}
+        <div className="w-full lg:max-w-xl pointer-events-auto mt-2 md:mt-4">
+          <div className="flex items-center gap-3 mb-2">
+            <span 
+              className="text-[13px] font-mono uppercase tracking-[0.2em] text-[#003B95] font-semibold"
+              id="inside-label"
             >
-              <div className="relative flex items-center justify-center">
-                {/* Outer pulsing ring */}
-                <div className={`absolute w-9 h-9 rounded-full transition-all duration-500 ${
-                  isActive 
-                    ? 'bg-[#003B95]/20 animate-ping opacity-100 scale-125' 
-                    : 'bg-slate-900/5 group-hover:bg-[#003B95]/10 group-hover:scale-110 opacity-60'
-                }`} />
-                {/* Secondary core ring */}
-                <div className={`absolute w-6 h-6 rounded-full border transition-all duration-300 ${
-                  isActive 
-                    ? 'border-[#003B95] bg-white scale-110 shadow-lg shadow-slate-950/10' 
-                    : 'border-slate-300 bg-white/90 group-hover:border-[#003B95]'
-                }`} />
-                {/* Center active dot */}
-                <div className={`w-2 h-2 rounded-full transition-all duration-300 ${
-                  isActive ? 'bg-[#003B95]' : 'bg-slate-400 group-hover:bg-[#003B95]'
-                }`} />
-                
-                {/* Floating Tooltip Label */}
-                <div className={`absolute left-8 px-2.5 py-1 rounded-md bg-slate-900/90 backdrop-blur-md text-[10px] font-mono uppercase tracking-wider text-white whitespace-nowrap transition-all duration-300 shadow-md ${
-                  isActive 
-                    ? 'opacity-100 translate-x-0' 
-                    : 'opacity-0 -translate-x-2 pointer-events-none group-hover:opacity-100 group-hover:translate-x-1'
-                }`}>
-                  {layer.title}
+              INSIDE SENSAI
+            </span>
+            <span className="w-8 h-[1px] bg-[#003B95]/30" />
+            <span className="text-[11px] font-sans tracking-wide text-slate-400 uppercase">
+              Interactive product visualization
+            </span>
+          </div>
+          <h2 className="text-2xl md:text-[46px] md:leading-[1.1] font-semibold tracking-tight text-[#2E2E2E] font-serif">
+            Every layer has a purpose.<br />
+            Every night benefits from it.
+          </h2>
+          <p className="text-xs md:text-[16px] text-slate-500 mt-3 leading-relaxed max-w-[500px]">
+            Premium comfort is created through thoughtful construction. Explore each layer to understand how carefully selected materials work together to deliver the SensAI experience.
+          </p>
+        </div>
+
+
+
+        {/* BOTTOM / EXTREME RIGHT: Experience Panel container + Editorial CTA */}
+        <div className="w-full flex flex-col lg:absolute lg:right-16 lg:bottom-16 lg:w-[420px] gap-4 pointer-events-auto z-30 mt-auto">
+          <AnimatePresence mode="wait">
+            {isInteractiveState && (
+              <motion.div
+                key={displayedHotspot.id}
+                initial={{ opacity: 0, x: 20 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: 20 }}
+                transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+                className="w-full"
+              >
+                <ExperiencePanel
+                  badge={displayedHotspot.badge}
+                  title={displayedHotspot.title}
+                  subtitle={displayedHotspot.subtitle}
+                  description={displayedHotspot.description}
+                  metrics={displayedHotspot.metrics}
+                  className="w-full shadow-2xl rounded-[24px] bg-white/94 backdrop-blur-[24px] border border-slate-100"
+                />
+              </motion.div>
+            )}
+          </AnimatePresence>
+
+          {/* Editorial CTA */}
+          <AnimatePresence>
+            {isInteractiveState && (
+              <motion.div 
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: 10 }}
+                transition={{ delay: 0.3, duration: 0.5 }}
+                className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 bg-white/90 backdrop-blur-md px-6 py-4 rounded-2xl border border-slate-200/60 shadow-lg w-full"
+              >
+                <div>
+                  <p className="text-[10px] font-mono uppercase tracking-widest text-slate-400 mb-0.5">NEXT CHAPTER</p>
+                  <h5 className="text-sm font-serif font-medium text-slate-900">Experience how it adapts to you.</h5>
                 </div>
-              </div>
-            </button>
-          );
-        })}
+                <button
+                  onClick={handleContinue}
+                  className="px-6 py-2.5 rounded-xl bg-[#003B95] text-white text-xs font-sans font-medium tracking-wide hover:bg-[#002d73] transition-all duration-300 shadow-sm hover:shadow active:scale-95"
+                >
+                  Continue
+                </button>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
+
       </div>
 
-      {/* Discovery Canvas Overlay with split layout to prevent vertical cutting-off */}
-      <div className="absolute inset-0 z-10 px-6 py-12 md:px-12 md:py-16 lg:px-20 lg:py-24 flex flex-col justify-between lg:grid lg:grid-cols-12 lg:items-center lg:gap-12 pointer-events-none">
-        
-        {/* Left Column: Header Title and Interactive Vertical Progress Stepper */}
-        <div className="lg:col-span-5 flex flex-col h-full justify-between lg:justify-center lg:gap-12 pointer-events-auto">
-          <div>
-            <p className="text-xs font-mono uppercase tracking-[0.2em] text-[#003B95] mb-2 font-semibold">
-              Inside the Core
-            </p>
-            <h2 className="text-3xl md:text-4xl lg:text-[44px] font-light font-serif tracking-tight text-slate-900 leading-tight">
-              Patented <span className="italic text-[#003B95] font-normal">SmartGRID®</span> technology.
-            </h2>
-            <p className="text-sm text-slate-500 mt-2 font-mono uppercase tracking-wider">
-              {progress < 0.2 ? 'Scroll to reveal internal core' : 'Adaptive comfort revealed layer by layer'}
-            </p>
-          </div>
-
-          {/* Elegant Interactive Layer Sidebar Timeline */}
-          <div className="hidden lg:flex flex-col gap-5 mt-6 relative pl-4 border-l border-slate-200/60">
+      {/* Floating Hotspots layer (Fade in cleanly as soon as Frame 10 is reached) */}
+      <AnimatePresence>
+        {isInteractiveState && (
+          <motion.div 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.5 }}
+            className="absolute inset-0 z-20 pointer-events-none"
+          >
             {LAYER_HOTSPOTS.map((layer, idx) => {
-              const isActive = activeHotspot.id === layer.id;
+              const isHovered = hoveredHotspot?.id === layer.id;
+              const isSelected = activeHotspot.id === layer.id;
+              const isCurrent = displayedHotspot.id === layer.id;
+
               return (
                 <button
-                  key={`timeline-${layer.id}`}
+                  key={`hotspot-${layer.id}`}
+                  onMouseEnter={() => setHoveredHotspot(layer)}
+                  onMouseLeave={() => setHoveredHotspot(null)}
                   onClick={() => handleLayerClick(idx)}
-                  className="group text-left focus:outline-none transition-all duration-300"
+                  onFocus={() => setHoveredHotspot(layer)}
+                  onBlur={() => setHoveredHotspot(null)}
+                  className="absolute pointer-events-auto group focus:outline-none -translate-x-1/2 -translate-y-1/2 transition-all duration-300"
+                  style={{ 
+                    top: layer.top, 
+                    left: layer.left,
+                    opacity: isAnyHovered ? (isHovered ? 1 : 0.4) : (isSelected ? 1 : 0.75),
+                    transform: `translate3d(-50%, -50%, 0) scale(${isHovered ? 1.15 : 1})`,
+                    transition: 'opacity 300ms cubic-bezier(0.25, 1, 0.5, 1), transform 300ms cubic-bezier(0.25, 1, 0.5, 1)'
+                  }}
+                  aria-label={`View details of ${layer.title}`}
                 >
-                  <div className="flex items-start gap-4">
-                    {/* Active Line Segment Dot */}
-                    <div className="relative flex items-center justify-center mt-1">
-                      <div className={`w-2.5 h-2.5 rounded-full transition-all duration-300 ${
-                        isActive 
-                          ? 'bg-[#003B95] scale-125 ring-4 ring-[#003B95]/15' 
-                          : 'bg-slate-300 group-hover:bg-[#003B95]/50'
-                      }`} />
+                  <div className="relative flex items-center justify-center w-12 h-12">
+                    {/* Soft ambient layer illumination behind current hotspot */}
+                    <div className={`absolute inset-0 rounded-full transition-all duration-500 ${
+                      isCurrent ? 'bg-[#003B95]/15 blur-md scale-125' : 'bg-transparent'
+                    }`} />
+
+                    {/* Outer slow luxury pulsing ring */}
+                    <motion.div
+                      animate={{
+                        scale: [1, 1.4, 1],
+                        opacity: [0.6, 0.15, 0.6]
+                      }}
+                      transition={{
+                        duration: 5,
+                        repeat: Infinity,
+                        ease: "easeInOut"
+                      }}
+                      className="absolute w-8 h-8 rounded-full border border-[#003B95]/30"
+                    />
+
+                    {/* Interactive dot core with focus outline */}
+                    <div className={`w-3.5 h-3.5 rounded-full transition-all duration-300 flex items-center justify-center ${
+                      isCurrent 
+                        ? 'bg-[#003B95] ring-4 ring-[#003B95]/20' 
+                        : 'bg-slate-400 group-hover:bg-[#003B95] group-focus-visible:ring-4 group-focus-visible:ring-[#003B95]/40'
+                    }`}>
+                      <div className="w-1.5 h-1.5 rounded-full bg-white" />
                     </div>
-                    <div>
-                      <p className={`text-[9px] font-mono tracking-widest transition-colors duration-300 uppercase ${
-                        isActive ? 'text-[#003B95] font-semibold' : 'text-slate-400'
-                      }`}>
-                        {layer.badge}
-                      </p>
-                      <h4 className={`text-sm font-sans font-medium transition-colors duration-300 ${
-                        isActive ? 'text-slate-950' : 'text-slate-500 group-hover:text-slate-800'
-                      }`}>
-                        {layer.title}
-                      </h4>
-                    </div>
+
+
                   </div>
                 </button>
               );
             })}
-          </div>
-        </div>
-
-        {/* Right Column: Floating Reusable Experience Panel (Glass Box) */}
-        <div className="lg:col-span-7 flex justify-end items-center h-full pointer-events-auto">
-          <div className="w-full max-w-[440px] lg:self-center">
-            <AnimatePresence mode="wait">
-              {progress > 0.05 && (
-                <motion.div
-                  key={activeHotspot.id}
-                  initial={{ opacity: 0, x: 20, scale: 0.98 }}
-                  animate={{ opacity: 1, x: 0, scale: 1 }}
-                  exit={{ opacity: 0, x: -20, scale: 0.98 }}
-                  transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
-                >
-                  <ExperiencePanel
-                    badge={activeHotspot.badge}
-                    title={activeHotspot.title}
-                    subtitle={activeHotspot.subtitle}
-                    description={activeHotspot.description}
-                    metrics={activeHotspot.metrics}
-                    className="w-full shadow-2xl"
-                  />
-                </motion.div>
-              )}
-            </AnimatePresence>
-          </div>
-        </div>
-
-      </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </section>
   );
 }

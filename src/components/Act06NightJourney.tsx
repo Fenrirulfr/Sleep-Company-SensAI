@@ -13,6 +13,7 @@ interface TimeSetting {
   title: string;
   subtitle: string;
   description: string;
+  image: string;
   bgGradient: string;
   lightingOverlay: string;
   metrics: Array<{ label: string; value: string | number; unit?: string }>;
@@ -27,8 +28,9 @@ const TIME_SETTINGS: TimeSetting[] = [
     title: 'Sunrise Thermal Ramp',
     subtitle: 'ENERGIZING CIRCADIAN TRANSITION',
     description: 'SensAI subtly warms the perimeter cells 15 minutes before your alarm, gently signaling your endocrine system to wake.',
-    bgGradient: 'from-amber-100/40 via-orange-50/20 to-slate-900/60',
-    lightingOverlay: 'radial-gradient(circle at 80% 20%, rgba(253, 230, 138, 0.4) 0%, transparent 60%)',
+    image: 'https://lh3.googleusercontent.com/d/1hxTUdgzXqB-Gv7FVs0uU6KS9JpTPYzkF',
+    bgGradient: 'from-amber-100/30 via-orange-50/10 to-slate-900/50',
+    lightingOverlay: 'radial-gradient(circle at 80% 20%, rgba(253, 230, 138, 0.3) 0%, transparent 60%)',
     metrics: [
       { label: 'Thermal Lift', value: '+1.5', unit: '°C' },
       { label: 'Awakening Quality', value: '100%', unit: 'refreshed' }
@@ -42,8 +44,9 @@ const TIME_SETTINGS: TimeSetting[] = [
     title: 'Pre-Sleep Cooling Down',
     subtitle: 'MELATONIN SYNC',
     description: 'Active thermal reduction dissipates residual body heat, lowering core temperature to trigger natural sleep onset.',
-    bgGradient: 'from-amber-900/40 via-indigo-950/60 to-slate-950',
-    lightingOverlay: 'radial-gradient(circle at 20% 40%, rgba(249, 115, 22, 0.25) 0%, transparent 70%)',
+    image: 'https://lh3.googleusercontent.com/d/18SK6MR_Q11OLAAQc5LvOM5WoU06KPPe9',
+    bgGradient: 'from-amber-800/15 via-indigo-900/30 to-slate-900/40',
+    lightingOverlay: 'radial-gradient(circle at 20% 40%, rgba(249, 115, 22, 0.12) 0%, transparent 70%)',
     metrics: [
       { label: 'Core Temp Shift', value: '-1.2', unit: '°C' },
       { label: 'Sleep Onset', value: '12', unit: 'mins' }
@@ -57,8 +60,9 @@ const TIME_SETTINGS: TimeSetting[] = [
     title: 'Zero-Interruption REM',
     subtitle: 'DEEP CELLULAR RESTORATION',
     description: 'Constant thermal stability and continuous pressure adaptation maintain maximum slow-wave delta sleep.',
-    bgGradient: 'from-[#001D4A]/80 via-slate-950 to-black',
-    lightingOverlay: 'radial-gradient(circle at 50% 30%, rgba(59, 130, 246, 0.2) 0%, transparent 60%)',
+    image: 'https://lh3.googleusercontent.com/d/1epirihkAg1FV9FMnNvgrZho3SpdsWG3q',
+    bgGradient: 'from-blue-950/40 via-slate-900/50 to-slate-950/60',
+    lightingOverlay: 'radial-gradient(circle at 50% 30%, rgba(59, 130, 246, 0.1) 0%, transparent 60%)',
     metrics: [
       { label: 'Delta Sleep Lift', value: '+35%' },
       { label: 'Micro-Arousals', value: '0' }
@@ -76,18 +80,29 @@ export function Act06NightJourney() {
       className="relative w-full min-h-screen overflow-hidden bg-slate-950 text-white flex items-center justify-center section-padding py-16 lg:py-24"
       aria-label="Your Night Journey"
     >
-      {/* Luxury Bedroom Ambient Background Image & Dynamic Lighting Overlays */}
+      {/* Dynamic Background Image & Lighting Overlays */}
       <div className="absolute inset-0 z-0 overflow-hidden">
-        <img 
-          src="https://images.unsplash.com/photo-1616594039964-ae9021a400a0?q=80&w=2000" 
-          alt="Luxury Bedroom Scene" 
-          referrerPolicy="no-referrer"
-          className="w-full h-full object-cover opacity-40 scale-105 transition-transform duration-[8s] ease-out"
-        />
-
         <AnimatePresence mode="popLayout">
           <motion.div
             key={time}
+            initial={{ opacity: 0, scale: 1.05 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.98 }}
+            transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
+            className="absolute inset-0"
+          >
+            <img 
+              src={activeSetting.image}
+              alt={activeSetting.title} 
+              referrerPolicy="no-referrer"
+              className="w-full h-full object-cover opacity-50 transition-transform duration-[8s] ease-out"
+            />
+          </motion.div>
+        </AnimatePresence>
+
+        <AnimatePresence mode="popLayout">
+          <motion.div
+            key={`gradient-${time}`}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}

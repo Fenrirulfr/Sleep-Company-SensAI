@@ -89,6 +89,15 @@ export function Act01Hero({ progress = 0 }: { progress?: number }) {
             style={{ opacity: boxOpacity }}
             className="flex flex-col items-start justify-start max-w-2xl gap-[var(--spacing-lg)] sm:gap-[var(--spacing-xl)] mt-[var(--spacing-md)] sm:mt-[var(--spacing-sm)] p-[var(--spacing-lg)] sm:p-[var(--spacing-xl)] md:p-[var(--spacing-2xl)] rounded-3xl bg-white/80 backdrop-blur-2xl border border-white shadow-[0_32px_64px_rgba(0,0,0,0.12)]"
           >
+            {/* Framed Badge just before Tomorrow Begins Tonight */}
+            <motion.div
+              style={{ opacity: headlineOpacity }}
+              className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-slate-900/[0.04] border border-slate-900/10 backdrop-blur-md text-[11px] font-mono uppercase tracking-[0.2em] text-slate-700 shadow-sm"
+            >
+              <Sparkles className="w-3.5 h-3.5 text-[#003B95]" />
+              <span>The Sleep Company • SensAI™</span>
+            </motion.div>
+
             {/* Headline */}
             <motion.div
               style={{

@@ -12,7 +12,7 @@ gsap.registerPlugin(ScrollTrigger);
 const COMBINED_FRAMES = [
   // MASTER_FRAMES (12)
   'https://lh3.googleusercontent.com/d/10MJyg1cp5TkvallYg89DLB8MmGrwaX2L',
-  'https://lh3.googleusercontent.com/d/118Wstj2B83IhVDcrkScmIcWtlHM8I_7A',
+  'https://lh3.googleusercontent.com/d/1EMxuskimWVE_1ODgKBuz3hZBGZt8s4Hi',
   'https://lh3.googleusercontent.com/d/17hghzl2lP7c5_7PMfm69_xuW8vGbg35b',
   'https://lh3.googleusercontent.com/d/1BZR3hFQyfDAcPT5j0TUcGYPnpMBRq4TD',
   'https://lh3.googleusercontent.com/d/1D5O8lPwdjvXQDp-EZUMoCHVgJt1UcVQj',
@@ -33,21 +33,15 @@ const COMBINED_FRAMES = [
   'https://lh3.googleusercontent.com/d/12zJ5HAPFZDPfVPW6hQnFzbIeKAOO8Asv',
   'https://lh3.googleusercontent.com/d/1kOXElLTj5KDMSvucXH3IIMlKgF-8nhU-',
 
-  // SMARTGRID_SEQUENCE (14 - slice first element as duplicate)
-  'https://lh3.googleusercontent.com/d/10n3lKo87QXnwCePuEhXuY0FdXGkr1JYx',
-  'https://lh3.googleusercontent.com/d/12e-mZGV6SMhGWR2nINlM4BtEigEzPWni',
-  'https://lh3.googleusercontent.com/d/15a-AzWvAhf7VJWwqhdXQbope_JJt6GSc',
-  'https://lh3.googleusercontent.com/d/1AGcZUVw5Dj33rHlsRSojjSC46tEQdUaz',
-  'https://lh3.googleusercontent.com/d/1DI6z336en7R8w0vQMJAtKDiU3hFAtj7j',
-  'https://lh3.googleusercontent.com/d/1NSB2BgMrjAVKTQszK4Qny3fmG2GpdChq',
-  'https://lh3.googleusercontent.com/d/1WjKB8nmySFXBpM5fd5_rcbacN9UpGHJp',
-  'https://lh3.googleusercontent.com/d/1ZL6ac4rDkcrj3rqrvCsDRvY0kFRFQ4bb',
-  'https://lh3.googleusercontent.com/d/1ZffCCpdbzBBc547kBB--qeVyX3hl0dmj',
-  'https://lh3.googleusercontent.com/d/1ak1glfepV5WT2yAGl0Y1QHzZhIJf-xw5',
-  'https://lh3.googleusercontent.com/d/1c4tKWrnA9u7gWvKQife1u3j1R1gaa8ep',
-  'https://lh3.googleusercontent.com/d/1liiySSBLEuMs9hkItOsFEdy2arLqeY7K',
-  'https://lh3.googleusercontent.com/d/1o8AgIdeBxfB8sPr0ghV3SE0YF_Bc6gHD',
-  'https://lh3.googleusercontent.com/d/1ulnUUHtHEywlWqAereRIO7tEezBROcVx'
+  // SMARTGRID_SEQUENCE (8)
+  'https://lh3.googleusercontent.com/d/1DIMBAUnaqCRd6FrhgSVgnAATxSVxDh2M',
+  'https://lh3.googleusercontent.com/d/14ZcqnC7ngW-vNEoZAq1dANMacnRbRZBE',
+  'https://lh3.googleusercontent.com/d/1fsoeq_PVhUz-p-UYNEomdFL5ovcBKrub',
+  'https://lh3.googleusercontent.com/d/1XGi572hGDFQgoLJ8hIaBdUp9YKwbKjye',
+  'https://lh3.googleusercontent.com/d/1jyDtgBK6-P-4yh3AbYMsGpmzrISWFRYy',
+  'https://lh3.googleusercontent.com/d/1QOehZlEkZM4xL7nEKVhR3Rr_YBov3M84',
+  'https://lh3.googleusercontent.com/d/1xE3UiwMCQhAmpxCm_qYt_tS-C8P3EWeK',
+  'https://lh3.googleusercontent.com/d/1XrETq8mSMrQ0I8IV-b0jr3ZuYdhcx4I1'
 ];
 
 interface CinematicContainerProps {
@@ -220,11 +214,31 @@ export function CinematicContainer({ onOpenTrialModal, onActChange }: CinematicC
       )}
 
       {/* Unified, fixed image sequence viewer spanning the entire container background */}
-      {isPreloaded && (
-        <div className="absolute inset-0 z-0 pointer-events-none select-none bg-white">
-          <WebGLSequenceViewer urls={COMBINED_FRAMES} progress={globalProgress} />
-        </div>
-      )}
+      {isPreloaded && (() => {
+        const numFrames = COMBINED_FRAMES.length;
+        let targetIndex = 0;
+        const p = globalProgress;
+
+        if (p < 0.35) {
+          const act1Progress = Math.min(1, p / 0.35);
+          targetIndex = Math.round(act1Progress * 11);
+        } else if (p >= 0.35 && p < 0.65) {
+          const act2Progress = Math.min(1, (p - 0.35) / 0.30);
+          targetIndex = 12 + Math.round(act2Progress * 6);
+        } else {
+          const act3Progress = Math.min(1, (p - 0.65) / 0.35);
+          const act3FrameIdx = Math.min(7, Math.round(act3Progress * 7));
+          targetIndex = 19 + act3FrameIdx;
+        }
+
+        const mappedGlobalProgress = targetIndex / (numFrames - 1);
+
+        return (
+          <div className="absolute inset-0 z-0 pointer-events-none select-none bg-white">
+            <WebGLSequenceViewer urls={COMBINED_FRAMES} progress={mappedGlobalProgress} />
+          </div>
+        );
+      })()}
 
       {/* Render Act 01 (Arrival) */}
       {isPreloaded && act1Opacity > 0 && (
